@@ -1,5 +1,5 @@
 @extends('layout.admin')
 
 @section('content')
-<h2>Sửa sản phẩm</h2>
+<h2>Thêm thông tin</h2>
 @endsection

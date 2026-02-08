@@ -3,63 +3,94 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
+
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Hiển thị danh sách category
      */
     public function index()
     {
-        //
+        $categories = Category::orderBy('id', 'desc')->get();
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Form thêm category
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Lưu category mới
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:100|unique:category,name',
+            'status' => 'required|boolean',
+        ]);
+
+        Category::create([
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Thêm loại sản phẩm thành công');
     }
 
     /**
-     * Display the specified resource.
+     * Form sửa category
      */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Cập nhật category
      */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|max:100|unique:category,name,' . $category->id,
+            'status' => 'required|boolean',
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Cập nhật loại sản phẩm thành công');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Xóa category
      */
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        //
-    }
+        $category = Category::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Nếu có sản phẩm thì không cho xóa
+        if ($category->products()->count() > 0) {
+            return redirect()->back()
+                ->with('error', 'Không thể xóa vì loại này đang có sản phẩm');
+        }
+
+        $category->delete();
+
+        return redirect()->route('categories.index')
+            ->with('success', 'Xóa loại sản phẩm thành công');
     }
 }
