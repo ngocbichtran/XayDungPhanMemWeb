@@ -34,11 +34,13 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|max:100|unique:category,name',
             'status' => 'required|boolean',
+            'description' => 'required|string',
         ]);
 
         Category::create([
             'name' => $request->name,
             'status' => $request->status,
+            'description' => $request->description,
         ]);
 
         return redirect()->route('categories.index')
