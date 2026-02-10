@@ -8,18 +8,12 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    /**
-     * Trang danh sách sản phẩm
-     */
     public function index()
     {
         $product = Products::all(); 
         return view('admin.products.index',compact('product'));
     }
 
-    /**
-     * Form tạo sản phẩm
-     */
     public function create()
     {
         return view('admin.products.create');
@@ -27,7 +21,7 @@ class ProductsController extends Controller
 
     public function store(Request $request)
     {
-        // validate + lưu
+    
     }
 
     public function edit($id)
@@ -38,7 +32,7 @@ class ProductsController extends Controller
 
     public function update(Request $request, $id)
     {
-        // validate + update
+    
     }
 
     public function destroy($id)

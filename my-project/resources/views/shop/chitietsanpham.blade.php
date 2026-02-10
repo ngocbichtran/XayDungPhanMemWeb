@@ -1,8 +1,6 @@
 @extends('layout.shop')
 @section('content')
-<!-- Top Navigation Bar -->
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Breadcrumbs -->
     <nav class="flex items-center gap-2 text-sm text-slate-500 mb-8 overflow-x-auto no-scrollbar whitespace-nowrap">
         <a class="hover:text-primary" href="{{ route('trangchu') }}">Home</a>
         <span class="material-symbols-outlined text-sm">chevron_right</span>
@@ -17,10 +15,7 @@
         </span>
     </nav>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <!-- Left Column: Product Visuals -->
         <div class="lg:col-span-7 space-y-4">
-
-            <!-- MAIN IMAGE -->
             <div id="mainImage" class="aspect-[4/3] w-full rounded-2xl overflow-hidden border shadow-sm mb-4
             flex items-center justify-center bg-white">
                 <div class="w-[75%] h-[75%] bg-center bg-contain bg-no-repeat"
@@ -53,11 +48,9 @@
             </div> -->
 
         </div>
-        <!-- Right Column: Product Details & Purchase -->
         <div class="lg:col-span-5 flex flex-col">
             <div id="rating-stars" style="display:flex;gap:4px;font-size:28px;">
 
-                <!-- SAO 1 -->
                 <div style="position:relative;cursor:pointer;">
                     <span data-value="0.5"
                         style="position:absolute;left:0;top:0;width:50%;height:100%;z-index:10;"></span>
@@ -70,7 +63,6 @@
                     </span>
                 </div>
 
-                <!-- SAO 2 -->
                 <div style="position:relative;cursor:pointer;">
                     <span data-value="1.5"
                         style="position:absolute;left:0;top:0;width:50%;height:100%;z-index:10;"></span>
@@ -83,7 +75,6 @@
                     </span>
                 </div>
 
-                <!-- SAO 3 -->
                 <div style="position:relative;cursor:pointer;">
                     <span data-value="2.5"
                         style="position:absolute;left:0;top:0;width:50%;height:100%;z-index:10;"></span>
@@ -96,7 +87,6 @@
                     </span>
                 </div>
 
-                <!-- SAO 4 -->
                 <div style="position:relative;cursor:pointer;">
                     <span data-value="3.5"
                         style="position:absolute;left:0;top:0;width:50%;height:100%;z-index:10;"></span>
@@ -138,9 +128,7 @@
             <p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed mb-8">
                 {{ $product->description }}
             </p>
-            <!-- Configuration Options -->
             <div class="space-y-6 mb-8 border-t border-slate-200 dark:border-slate-800 pt-6">
-                <!-- Quantity -->
                 <div>
                     <span class="block text-sm font-bold text-slate-900 dark:text-white mb-3">Quantity</span>
                     <div
@@ -155,7 +143,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Purchase Buttons -->
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
                 <button
                     class="flex items-center justify-center gap-2 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
@@ -184,7 +172,7 @@
             </div>
         </div>
     </div>
-    <!-- Detailed Info Tabs Section -->
+
     <div class="mt-20">
         <div class="flex border-b border-slate-200 dark:border-slate-800 gap-8">
             <button class="pb-4 text-sm font-bold text-primary border-b-2 border-primary">Specifications</button>
@@ -243,7 +231,7 @@
             </div>
         </div>
     </div>
-    <!-- Related Products (Briefly suggested by clean layout) -->
+
     <div class="mt-20 border-t border-slate-200 dark:border-slate-800 pt-16">
         <div class="flex items-center justify-between mb-8">
             <h3 class="text-2xl font-bold text-slate-900 dark:text-white">People Also Viewed</h3>
@@ -251,7 +239,7 @@
                     class="material-symbols-outlined text-sm">arrow_forward</span></a>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <!-- Related Item 1 -->
+  
             <div class="group cursor-pointer">
                 <div
                     class="aspect-square rounded-xl overflow-hidden bg-white dark:bg-slate-800 mb-4 border border-slate-200 dark:border-slate-800 relative">
@@ -267,7 +255,7 @@
                 <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Sonic Mini Speaker</h4>
                 <span class="text-sm text-primary font-bold">$79.00</span>
             </div>
-            <!-- Related Item 2 -->
+
             <div class="group cursor-pointer">
                 <div
                     class="aspect-square rounded-xl overflow-hidden bg-white dark:bg-slate-800 mb-4 border border-slate-200 dark:border-slate-800 relative">
@@ -283,7 +271,7 @@
                 <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Pro Stream Mic</h4>
                 <span class="text-sm text-primary font-bold">$189.00</span>
             </div>
-            <!-- Related Item 3 -->
+
             <div class="group cursor-pointer">
                 <div
                     class="aspect-square rounded-xl overflow-hidden bg-white dark:bg-slate-800 mb-4 border border-slate-200 dark:border-slate-800 relative">
@@ -299,7 +287,7 @@
                 <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Buds Pro ANC</h4>
                 <span class="text-sm text-primary font-bold">$129.00</span>
             </div>
-            <!-- Related Item 4 -->
+
             <div class="group cursor-pointer">
                 <div
                     class="aspect-square rounded-xl overflow-hidden bg-white dark:bg-slate-800 mb-4 border border-slate-200 dark:border-slate-800 relative">
@@ -338,17 +326,14 @@ function paint(value) {
         const starVal = index + 1;
 
         if (value >= starVal) {
-            // FULL STAR
             icon.textContent = 'star';
             icon.style.fontVariationSettings = "'FILL' 1";
             icon.style.color = '#f59e0b';
         } else if (value >= starVal - 0.5) {
-            // HALF STAR
             icon.textContent = 'star_half';
             icon.style.fontVariationSettings = "'FILL' 1";
             icon.style.color = '#f59e0b';
         } else {
-            // EMPTY STAR
             icon.textContent = 'star';
             icon.style.fontVariationSettings = "'FILL' 0";
             icon.style.color = '#d1d5db';

@@ -28,31 +28,26 @@
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.tailwindcss.min.js"></script>
 
     <style>
-        /* Ẩn dropdown số dòng */
         .dataTables_length {
             display: none;
         }
 
-        /* Search sang phải */
         .dataTables_filter {
             float: right;
             margin-bottom: 1rem;
         }
 
-        /* Input search đẹp hơn */
         .dataTables_filter input {
             border-radius: 0.5rem;
             border: 1px solid #d1d5db;
             padding: 6px 10px;
         }
 
-        /* Table */
         table.dataTable {
             border-radius: 0.75rem;
             overflow: hidden;
         }
 
-        /* Header */
         table.dataTable thead th {
             background: #f9fafb;
             font-weight: 600;

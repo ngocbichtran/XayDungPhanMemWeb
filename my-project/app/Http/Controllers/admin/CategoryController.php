@@ -9,26 +9,19 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Hiển thị danh sách category
-     */
+
     public function index()
     {
         $categories = Category::orderBy('id', 'desc')->get();
         return view('admin.categories.index', compact('categories'));
     }
 
-    /**
-     * Form thêm category
-     */
+
     public function create()
     {
         return view('admin.categories.create');
     }
 
-    /**
-     * Lưu category mới
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -47,18 +40,12 @@ class CategoryController extends Controller
             ->with('success', 'Thêm loại sản phẩm thành công');
     }
 
-    /**
-     * Form sửa category
-     */
     public function edit($id)
     {
         $category = Category::findOrFail($id);
         return view('admin.categories.edit', compact('category'));
     }
 
-    /**
-     * Cập nhật category
-     */
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
@@ -77,14 +64,9 @@ class CategoryController extends Controller
             ->with('success', 'Cập nhật loại sản phẩm thành công');
     }
 
-    /**
-     * Xóa category
-     */
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
-
-        // Nếu có sản phẩm thì không cho xóa
         if ($category->products()->count() > 0) {
             return redirect()->back()
                 ->with('error', 'Không thể xóa vì loại này đang có sản phẩm');

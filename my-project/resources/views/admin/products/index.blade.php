@@ -36,8 +36,8 @@ $(document).ready(function () {
         serverSide: true,
         ajax: "{{ route('products.data') }}",
 
-        pageLength: 15,          // mặc định 15 dòng
-        lengthChange: false,     // ẩn dropdown số dòng
+        pageLength: 15,
+        lengthChange: false, 
 
         columns: [
             { data: 'id' },
