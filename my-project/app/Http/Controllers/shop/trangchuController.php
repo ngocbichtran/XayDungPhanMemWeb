@@ -42,7 +42,6 @@ class trangchuController extends Controller
             return view('shop.chitietsanpham', compact('product', 'categories'));
         }
 
-        //Goi y san pham khi tim kiem
                 public function searchSuggest(Request $request)
         {
             $keyword = $request->q;
@@ -51,13 +50,11 @@ class trangchuController extends Controller
                 return response()->json([]);
             }
 
-            // Tìm sản phẩm
             $products = Products::where('name', 'like', "%$keyword%")
                 ->where('status', 1)
                 ->limit(5)
                 ->get(['id', 'name']);
 
-            // Tìm danh mục
             $categories = Category::where('name', 'like', "%$keyword%")
                 ->where('status', 1)
                 ->limit(5)
@@ -68,4 +65,15 @@ class trangchuController extends Controller
                 'categories' => $categories
             ]);
         }
+
+        public function search(Request $request)
+    {
+        $q = $request->query('q');
+
+        $products = Products::where('name', 'LIKE', "%{$q}%")
+            ->with('category')
+            ->get();
+
+        return view('shop.search', compact('products', 'q'));
+    }
 }

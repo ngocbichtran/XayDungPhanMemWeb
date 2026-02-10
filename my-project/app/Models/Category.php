@@ -22,9 +22,6 @@ class Category extends Model
         'status' => 'boolean',
     ];
 
-    /**
-     * Quan hệ: Category có nhiều Product
-     */
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id');

@@ -3,11 +3,8 @@
 
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
     <div class="layout-container flex h-full grow flex-col">
-        <!-- Header -->
-
         <main class="flex-1 flex justify-center py-5">
             <div class="layout-content-container flex flex-col max-w-[1280px] w-full px-10 gap-6">
-                <!-- Hero Section -->
                 <div class="@container w-full">
                     <div
                         class="flex flex-col gap-6 px-4 py-8 @[864px]:flex-row bg-white dark:bg-[#1a2632] rounded-xl shadow-sm overflow-hidden">
@@ -43,7 +40,6 @@
                     </div>
                 </div>
                 <div class="flex flex-col md:flex-row gap-8">
-                    <!-- Sidebar Filters -->
                     <aside class="w-full md:w-64 shrink-0">
                         <div
                             class="flex flex-col gap-6 bg-white dark:bg-[#1a2632] p-6 rounded-xl shadow-sm sticky top-24">
@@ -136,9 +132,7 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- product card -->
                             @foreach ($products as $product)
-
                             <div
                                 class="flex flex-col bg-white dark:bg-[#1a2632] rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-shadow">
 
@@ -171,7 +165,6 @@
                             @endforeach
 
                         </div>
-                        <!-- Pagination -->
                         <div class="flex items-center justify-center gap-2 py-8 mt-4">
                             <button
                                 class="size-10 flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-800 text-[#617589] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">

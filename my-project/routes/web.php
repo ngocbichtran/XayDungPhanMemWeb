@@ -12,6 +12,9 @@ Route::get('/', [trangchuController::class, 'index'])
 Route::get('/shop/category/{id}', [trangchuController::class, 'show'])
     ->name('shop.category');
 
+Route::get('/shop/search', [trangchuController::class, 'search'])
+    ->name('shop.search');
+
 Route::get('/shop/search/suggest', [trangchuController::class, 'searchSuggest'])
     ->name('shop.searchsuggest');
 

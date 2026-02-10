@@ -58,25 +58,29 @@
             <h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
                 UserStore</h2>
         </div>
-        <label class="relative min-w-40 h-10 max-w-64">
-            <!-- SEARCH BAR -->
-            <div class="flex items-center h-full rounded-lg bg-[#f0f2f4] dark:bg-gray-800 overflow-hidden">
+    <form action="{{ route('shop.search') }}" method="GET" class="relative min-w-40 h-10 max-w-64">
+    <div class="flex items-center h-full rounded-lg bg-[#f0f2f4] dark:bg-gray-800 overflow-hidden">
 
-                <!-- ICON -->
-                <span class="material-symbols-outlined px-3 text-[#617589] dark:text-gray-400">
-                    search
-                </span>
+        <span class="material-symbols-outlined px-3 text-[#617589] dark:text-gray-400">
+            search
+        </span>
 
-                <!-- INPUT -->
-                <input id="searchInput" autocomplete="off" class="flex-1 h-full bg-transparent border-none focus:ring-0 focus:outline-none
-                   text-[#111418] dark:text-white placeholder:text-[#617589] text-sm" placeholder="Search" />
-            </div>
+        <input
+            id="searchInput"
+            name="q"
+            autocomplete="off"
+            class="flex-1 h-full bg-transparent border-none focus:ring-0 focus:outline-none
+            text-[#111418] dark:text-white placeholder:text-[#617589] text-sm"
+            placeholder="Tìm sản phẩm, danh mục..."
+        />
+    </div>
 
-            <!-- DROPDOWN -->
-            <div id="searchDropdown" class="absolute top-full left-0 w-full bg-white dark:bg-[#1a2632]
-                shadow-lg rounded-lg mt-1 hidden z-50">
-            </div>
-        </label>
+    <div id="searchDropdown"
+         class="absolute top-full left-0 w-full bg-white dark:bg-[#1a2632]
+         shadow-lg rounded-lg mt-1 hidden z-50">
+    </div>
+</form>
+
 
     </div>
     <div class="flex flex-1 justify-end gap-8">
@@ -181,6 +185,8 @@
 const input = document.getElementById('searchInput');
 const dropdown = document.getElementById('searchDropdown');
 
+let controller;
+
 input.addEventListener('input', function () {
     const q = this.value.trim();
 
@@ -190,53 +196,57 @@ input.addEventListener('input', function () {
         return;
     }
 
-    fetch(`/shop/search/suggest?q=${encodeURIComponent(q)}`)
+    // huỷ request cũ
+    if (controller) controller.abort();
+    controller = new AbortController();
+
+    fetch(`/shop/search/suggest?q=${encodeURIComponent(q)}`, {
+        signal: controller.signal
+    })
         .then(res => res.json())
         .then(data => {
-            if (data.products.length === 0 && data.categories.length === 0) {
-                dropdown.classList.add('hidden');
-                return;
-            }
-
             let html = '';
 
             if (data.categories.length > 0) {
                 html += `<div class="px-3 py-1 text-[10px] font-bold text-gray-400 uppercase bg-gray-50 dark:bg-gray-700">Danh mục</div>`;
                 data.categories.forEach(cat => {
-                    html += `<div class="px-4 py-2 text-sm hover:bg-primary hover:text-white cursor-pointer transition-colors" 
-                             onclick="window.location.href='/shop/category/${cat.id}'">${cat.name}</div>`;
+                    html += `
+                    <a href="/shop/category/${cat.id}"
+                       class="block px-4 py-2 text-sm hover:bg-primary hover:text-white transition-colors">
+                       ${cat.name}
+                    </a>`;
                 });
             }
 
             if (data.products.length > 0) {
                 html += `<div class="px-3 py-1 text-[10px] font-bold text-gray-400 uppercase bg-gray-50 dark:bg-gray-700 border-t">Sản phẩm</div>`;
                 data.products.forEach(prod => {
-                    html += `<div class="px-4 py-2 text-sm hover:bg-primary hover:text-white cursor-pointer transition-colors truncate" 
-         title="${prod.name}" 
-         onclick="window.location.href='/shop/chitietsanpham/${prod.id}'">
-          ${prod.name}
-</div>`;
+                    html += `
+                    <a href="/shop/chitietsanpham/${prod.id}"
+                       class="block px-4 py-2 text-sm hover:bg-primary hover:text-white truncate transition-colors"
+                       title="${prod.name}">
+                       ${prod.name}
+                    </a>`;
                 });
+            }
+
+            if (html === '') {
+                dropdown.classList.add('hidden');
+                return;
             }
 
             dropdown.innerHTML = html;
             dropdown.classList.remove('hidden');
-        });
+        })
+        .catch(() => {});
 });
 
-input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        const q = this.value.trim();
-        if (q) {
-            window.location.href = `/shop/search?q=${encodeURIComponent(q)}`;
-        }
-    }
-});
-
+// click ngoài thì đóng
 document.addEventListener('click', (e) => {
-    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+    if (!e.target.closest('form')) {
         dropdown.classList.add('hidden');
     }
 });
 </script>
+
 </html>
