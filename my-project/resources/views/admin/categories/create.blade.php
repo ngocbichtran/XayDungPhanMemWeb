@@ -3,22 +3,28 @@
 @section('content')
 <h2>Thêm loại sản phẩm</h2>
 
-<form method="POST" action="{{ route('categories.store') }}">
+<form action="{{ route('categories.store') }}" method="POST">
     @csrf
 
-    <div class="mb-3">
+    <div>
         <label>Tên loại</label>
-        <input type="text" name="name" class="form-control" required>
+        <input type="text" name="name">
     </div>
 
-    <div class="mb-3">
+    <div>
+        <label>Mô tả</label>
+        <textarea name="description"></textarea>
+    </div>
+
+    <div>
         <label>Trạng thái</label>
-        <select name="status" class="form-control">
-            <option value="1">Hiển thị</option>
+        <select name="status">
+            <option value="1">Hoạt động</option>
             <option value="0">Ẩn</option>
         </select>
     </div>
 
-    <button class="btn btn-success">Lưu</button>
+    <button type="submit">Lưu</button>
 </form>
+
 @endsection
