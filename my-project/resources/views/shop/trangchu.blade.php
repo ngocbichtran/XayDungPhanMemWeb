@@ -4,55 +4,7 @@
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
     <div class="layout-container flex h-full grow flex-col">
         <!-- Header -->
-        <header
-            class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f4] dark:border-b-gray-800 px-10 py-3 bg-white dark:bg-[#1a2632] sticky top-0 z-50">
-            <div class="flex items-center gap-8">
-                <div class="flex items-center gap-4 text-[#111418] dark:text-white">
-                    <div class="size-6 text-primary">
-                        <span class="material-symbols-outlined text-3xl">shopping_bag</span>
-                    </div>
-                    <h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
-                        UserStore</h2>
-                </div>
-                <label class="flex flex-col min-w-40 !h-10 max-w-64">
-                    <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
-                        <div
-                            class="text-[#617589] dark:text-gray-400 flex border-none bg-[#f0f2f4] dark:bg-gray-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
-                            <span class="material-symbols-outlined">search</span>
-                        </div>
-                        <input
-                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111418] dark:text-white focus:outline-0 focus:ring-0 border-none bg-[#f0f2f4] dark:bg-gray-800 focus:border-none h-full placeholder:text-[#617589] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal"
-                            placeholder="Search products..." value="" />
-                    </div>
-                </label>
-            </div>
-            <div class="flex flex-1 justify-end gap-8">
-                <div class="flex items-center gap-9">
-                    <a class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors"
-                        href="{{route('trangadmin')}}">Home</a>
-                    <a class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors"
-                        href="#">Categories</a>
-                    <a class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors"
-                        href="#">Deals</a>
-                    <a class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors"
-                        href="#">Support</a>
-                </div>
-                <div class="flex gap-2">
-                    <button
-                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
-                        <span class="truncate">Login</span>
-                    </button>
-                    <button
-                        class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-white gap-2 text-sm font-bold leading-normal min-w-0 px-2.5">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                    </button>
-                    <button
-                        class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-white gap-2 text-sm font-bold leading-normal min-w-0 px-2.5">
-                        <span class="material-symbols-outlined">account_circle</span>
-                    </button>
-                </div>
-            </div>
-        </header>
+
         <main class="flex-1 flex justify-center py-5">
             <div class="layout-content-container flex flex-col max-w-[1280px] w-full px-10 gap-6">
                 <!-- Hero Section -->
@@ -184,252 +136,40 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- Product Card 1 -->
+                            <!-- product card -->
+                            @foreach ($products as $product)
+
                             <div
                                 class="flex flex-col bg-white dark:bg-[#1a2632] rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-shadow">
+
                                 <div class="relative aspect-square bg-center bg-cover"
-                                    data-alt="Modern smartphone with high-resolution display"
-                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDyBhQUY53fIweznMlsNU_z8TmEYSP7rWH0S18slVfUIldv_EIAqz6IYFb_aOBg47HqQokJJQj_G2qSkXlCOq2yd6__H5u1Pl1uf9JVZMgXS5JSj2IZsZt2wybmw05xL99FjVxHd2iADN8uUJY9yeGIb2oi6lcW1JqyfA_UmMLG7cH7sJXmaddIVXnine_BvTDsDqFzOb8BmAfyc8jNx1ZVcei-0lQaA5KlexAQxqz6sJVTT3U-OAkTDgPcOmpg8_cWNKS68g-YjMRp");'>
-                                    <div
-                                        class="absolute top-3 left-3 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
-                                        New</div>
-                                    <button
-                                        class="absolute top-3 right-3 size-8 flex items-center justify-center bg-white/80 dark:bg-black/40 backdrop-blur rounded-full text-[#111418] dark:text-white hover:text-red-500 transition-colors">
-                                        <span class="material-symbols-outlined text-xl">favorite</span>
-                                    </button>
+                                    style="background-image: url('{{ $product->image }}')">
                                 </div>
+
                                 <div class="flex flex-col p-4 gap-2">
-                                    <div class="flex flex-col">
-                                        <p class="text-[#617589] dark:text-gray-400 text-xs font-medium uppercase">
-                                            Electronics</p>
-                                        <h3 class="text-[#111418] dark:text-white text-base font-bold truncate">Premium
-                                            X-Phone Pro</h3>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span class="material-symbols-outlined text-gray-300 text-sm">star</span>
-                                        <span class="text-xs text-[#617589] dark:text-gray-400 ml-1">(42)</span>
-                                    </div>
+
+                                    <p class="text-xs uppercase text-gray-400">
+                                        {{ $product->category->name }}
+                                    </p>
+
+                                    <h3 class="font-bold truncate">
+                                        {{ $product->name }}
+                                    </h3>
+
                                     <div class="flex items-center justify-between mt-2">
-                                        <span class="text-[#111418] dark:text-white text-xl font-black">$899.00</span>
-                                        <button
-                                            class="flex items-center justify-center size-10 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors">
-                                            <span class="material-symbols-outlined">add_shopping_cart</span>
-                                        </button>
+                                        <span class="text-xl font-black text-slate-900 dark:text-white">
+                                            {{ number_format($product->price) }} ₫
+                                        </span>
+
+                                        <a href="{{ route('shop.chitietsanpham', $product->id) }}" class="px-3 py-1.5 text-sm font-semibold rounded-lg
+                                           bg-primary text-white hover:bg-primary/90 transition">
+                                            Xem chi tiết
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Product Card 2 -->
-                            <div
-                                class="flex flex-col bg-white dark:bg-[#1a2632] rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-shadow">
-                                <div class="relative aspect-square bg-center bg-cover"
-                                    data-alt="Minimalist wooden desk clock"
-                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBjGuNUFs9vKGPeQbhDBbQhFJQ7kS9kLgXRnXM4gSpAt17b4kZF4NvGVYYVOlbqDHAxfQTM-IVsjw1PjFFRyDOtuRhC-N2dmqcV0sRKx5_4nX7mH-1emDwG3aVTO8o7DhoHe_rsn8WGLmdU4AMxw35v_Tu6J0xanCRibQELJCWjTEpkLS90LxEWNzaDfQkggMz_sZMV8QpvybD1gbSl4jmok11JD9TEywzC9QN23ntLSEKUVgSZJ528-tooeSzgXMFCB8L0kb8RBkF6");'>
-                                    <div
-                                        class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
-                                        Sale</div>
-                                    <button
-                                        class="absolute top-3 right-3 size-8 flex items-center justify-center bg-white/80 dark:bg-black/40 backdrop-blur rounded-full text-[#111418] dark:text-white">
-                                        <span class="material-symbols-outlined text-xl">favorite</span>
-                                    </button>
-                                </div>
-                                <div class="flex flex-col p-4 gap-2">
-                                    <div class="flex flex-col">
-                                        <p class="text-[#617589] dark:text-gray-400 text-xs font-medium uppercase">
-                                            Accessories</p>
-                                        <h3 class="text-[#111418] dark:text-white text-base font-bold truncate">
-                                            Minimalist Wood Clock</h3>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span class="text-xs text-[#617589] dark:text-gray-400 ml-1">(128)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between mt-2">
-                                        <div class="flex flex-col">
-                                            <span
-                                                class="text-[#111418] dark:text-white text-xl font-black">$45.00</span>
-                                            <span
-                                                class="text-[#617589] dark:text-gray-500 text-xs line-through">$60.00</span>
-                                        </div>
-                                        <button
-                                            class="flex items-center justify-center size-10 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors">
-                                            <span class="material-symbols-outlined">add_shopping_cart</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product Card 3 -->
-                            <div
-                                class="flex flex-col bg-white dark:bg-[#1a2632] rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-shadow">
-                                <div class="relative aspect-square bg-center bg-cover"
-                                    data-alt="Professional camera lens detail"
-                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCwmT1NhGHN4bnEeCFVG49ybLiHPs3tMDb_qti5u-Erxz12l0K7RGdmu5qs0hlZZtC5lw3xNA4HVQHWVEX21COENm29GegkXGkJ6ljmyBH9HSfLR0b7_5cNQSEZU_wQFs16_p2hxgm_EeZZrcC6RJMXq0s_DQGrFdqmjD7d8Kvh7RgC5ejcEx6SoG7fbfxxDr9PfHxodGceXr-uv0SQ452KMKYfQa3M3lvXz7x_NnNMkmEhPKe6pVS7fzkvR3MYaUuiey2oP1EFAwjC");'>
-                                    <button
-                                        class="absolute top-3 right-3 size-8 flex items-center justify-center bg-white/80 dark:bg-black/40 backdrop-blur rounded-full text-[#111418] dark:text-white">
-                                        <span class="material-symbols-outlined text-xl">favorite</span>
-                                    </button>
-                                </div>
-                                <div class="flex flex-col p-4 gap-2">
-                                    <div class="flex flex-col">
-                                        <p class="text-[#617589] dark:text-gray-400 text-xs font-medium uppercase">
-                                            Photography</p>
-                                        <h3 class="text-[#111418] dark:text-white text-base font-bold truncate">Retro
-                                            Cinema Camera</h3>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span class="material-symbols-outlined text-gray-300 text-sm">star</span>
-                                        <span class="text-xs text-[#617589] dark:text-gray-400 ml-1">(15)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between mt-2">
-                                        <span class="text-[#111418] dark:text-white text-xl font-black">$320.00</span>
-                                        <button
-                                            class="flex items-center justify-center size-10 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors">
-                                            <span class="material-symbols-outlined">add_shopping_cart</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product Card 4 -->
-                            <div
-                                class="flex flex-col bg-white dark:bg-[#1a2632] rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-shadow">
-                                <div class="relative aspect-square bg-center bg-cover" data-alt="Ergonomic office chair"
-                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDjUCdCXqBq7AmhN-vzesP0AXc6H6wQNfwKVNOf_jumLE4Ejt9KLdponKntfQJsgjbDHbh399AUZhiHx8NphpXkExa6LzRtq-Vf-70BZCk094SzfglnRsKyWm9-V_b-ewiDnHwl3Gd5DtyvdTuUj7VUYljCBkVNCXoWQtz8r326a4xkdxwgcd0VcljD-1EOJAgDruIpI3MmA3H-DKlFhgqajPP-9XXJ7SUX4Pbteu0wrAbg8v_5n4XWBcE-1rW4jKDAeGIcQgPNRSu6");'>
-                                    <button
-                                        class="absolute top-3 right-3 size-8 flex items-center justify-center bg-white/80 dark:bg-black/40 backdrop-blur rounded-full text-[#111418] dark:text-white">
-                                        <span class="material-symbols-outlined text-xl">favorite</span>
-                                    </button>
-                                </div>
-                                <div class="flex flex-col p-4 gap-2">
-                                    <div class="flex flex-col">
-                                        <p class="text-[#617589] dark:text-gray-400 text-xs font-medium uppercase">
-                                            Furniture</p>
-                                        <h3 class="text-[#111418] dark:text-white text-base font-bold truncate">
-                                            Executive Comfort Chair</h3>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span class="text-xs text-[#617589] dark:text-gray-400 ml-1">(56)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between mt-2">
-                                        <span class="text-[#111418] dark:text-white text-xl font-black">$249.00</span>
-                                        <button
-                                            class="flex items-center justify-center size-10 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors">
-                                            <span class="material-symbols-outlined">add_shopping_cart</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product Card 5 -->
-                            <div
-                                class="flex flex-col bg-white dark:bg-[#1a2632] rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-shadow">
-                                <div class="relative aspect-square bg-center bg-cover"
-                                    data-alt="High quality leather boots"
-                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAqDizArZg6wq1ZaYXbcedHMEagfUpJnfYVlRyFQ4BfZEG6x6tozw9U1BWJFku9pz1LbHAwP6ygDdVLpolZkN3jrxhjDbMX5qEp96V8_jo87IWTBHx8GMk-z2wcpppUle8Qhr0Ln72LJx89KPjkFV_yXm68-aQz1KNhxgxeZSBoFsQzxxhUhDZ_P7w1MKu_8xJcajx7ZOdJWZ6UcX_BG62pdgfnIFbYoCjn-ica5iWTviFTGVEpE_RYftR_N9rO6_G838sp7jSDu2gC");'>
-                                    <button
-                                        class="absolute top-3 right-3 size-8 flex items-center justify-center bg-white/80 dark:bg-black/40 backdrop-blur rounded-full text-[#111418] dark:text-white">
-                                        <span class="material-symbols-outlined text-xl">favorite</span>
-                                    </button>
-                                </div>
-                                <div class="flex flex-col p-4 gap-2">
-                                    <div class="flex flex-col">
-                                        <p class="text-[#617589] dark:text-gray-400 text-xs font-medium uppercase">
-                                            Fashion</p>
-                                        <h3 class="text-[#111418] dark:text-white text-base font-bold truncate">Elite
-                                            Leather Sneakers</h3>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span class="material-symbols-outlined text-gray-300 text-sm">star</span>
-                                        <span class="material-symbols-outlined text-gray-300 text-sm">star</span>
-                                        <span class="text-xs text-[#617589] dark:text-gray-400 ml-1">(89)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between mt-2">
-                                        <span class="text-[#111418] dark:text-white text-xl font-black">$120.00</span>
-                                        <button
-                                            class="flex items-center justify-center size-10 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors">
-                                            <span class="material-symbols-outlined">add_shopping_cart</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Product Card 6 -->
-                            <div
-                                class="flex flex-col bg-white dark:bg-[#1a2632] rounded-xl overflow-hidden shadow-sm group hover:shadow-md transition-shadow">
-                                <div class="relative aspect-square bg-center bg-cover"
-                                    data-alt="Smart home voice assistant speaker"
-                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuALYiMCtApaFrZXKPROhnXdyA5uSd2eh3x4PwMBHEdDTd1RIykWMSzv-f_EQQHJES4t7AUzqhDItYT3evo1J218hjxZkdV1jf0UKxEo31PuqMH4n_2xjNgEVyoYa5qNLhFl7aJ691A6SMBy-JGcEEO74NeOp8Yen2YRSz-0tos5UjF2WJCZhtqAGXsBGdVD277U58iGDPaLsVJ6035n_uidNHP7ofHma9q6xb6Ox3XWG5lkilbAhJ-_a_hbzw6hFbEsDnWRWotcufKf");'>
-                                    <button
-                                        class="absolute top-3 right-3 size-8 flex items-center justify-center bg-white/80 dark:bg-black/40 backdrop-blur rounded-full text-[#111418] dark:text-white">
-                                        <span class="material-symbols-outlined text-xl">favorite</span>
-                                    </button>
-                                </div>
-                                <div class="flex flex-col p-4 gap-2">
-                                    <div class="flex flex-col">
-                                        <p class="text-[#617589] dark:text-gray-400 text-xs font-medium uppercase">Smart
-                                            Home</p>
-                                        <h3 class="text-[#111418] dark:text-white text-base font-bold truncate">Aura
-                                            Smart Speaker</h3>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-sm fill-current">star</span>
-                                        <span class="text-xs text-[#617589] dark:text-gray-400 ml-1">(210)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between mt-2">
-                                        <span class="text-[#111418] dark:text-white text-xl font-black">$79.99</span>
-                                        <button
-                                            class="flex items-center justify-center size-10 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors">
-                                            <span class="material-symbols-outlined">add_shopping_cart</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
+
                         </div>
                         <!-- Pagination -->
                         <div class="flex items-center justify-center gap-2 py-8 mt-4">
