@@ -21,11 +21,5 @@ Route::get('/shop/search/suggest', [trangchuController::class, 'searchSuggest'])
 Route::get('/shop/chitietsanpham/{id}', [trangchuController::class, 'detail'])
     ->name('shop.chitietsanpham');
 
-//route cua ngocbich
-Route::prefix('admin')->group(function () {
-    Route::resource('categories', CategoryController::class);
 
-    Route::resource('products', ProductsController::class);
-    
-    Route::resource('pages', PageController::class);
-});
+

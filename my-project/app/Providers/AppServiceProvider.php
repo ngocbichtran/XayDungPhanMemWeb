@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Providers;
 use Illuminate\Support\Facades\View;
 use App\Models\Category;

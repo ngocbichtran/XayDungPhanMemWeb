@@ -28,30 +28,7 @@
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.tailwindcss.min.js"></script>
 
     <style>
-        .dataTables_length {
-            display: none;
-        }
-
-        .dataTables_filter {
-            float: right;
-            margin-bottom: 1rem;
-        }
-
-        .dataTables_filter input {
-            border-radius: 0.5rem;
-            border: 1px solid #d1d5db;
-            padding: 6px 10px;
-        }
-
-        table.dataTable {
-            border-radius: 0.75rem;
-            overflow: hidden;
-        }
-
-        table.dataTable thead th {
-            background: #f9fafb;
-            font-weight: 600;
-        }
+      
 
     </style>
 
@@ -76,6 +53,11 @@
                class="block px-3 py-2 rounded
                {{ request()->routeIs('categories.*') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100' }}">
                 Categories
+            </a>
+            <a href="{{ route('pages.index') }}"
+               class="block px-3 py-2 rounded
+               {{ request()->routeIs('pages.*') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100' }}">
+                Pages
             </a>
         </nav>
     </aside>
