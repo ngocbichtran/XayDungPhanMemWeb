@@ -16,6 +16,10 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
+# MỚI: Sửa Apache DocumentRoot để không bị lỗi 403
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
+
 # Cấu hình thư mục làm việc
 WORKDIR /var/www/html
 COPY . .
