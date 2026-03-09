@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Users extends Model
 {
-    protected $table = 'users'; //
+    protected $table = 'users';
 
-    // BẮT BUỘC: Đổi filetable thành fillable để cho phép lưu dữ liệu
     protected $fillable = ['name'];
+
+    // THÊM DÒNG NÀY ĐỂ SỬA LỖI SQL TRÊN
+    public $timestamps = false;
 }
