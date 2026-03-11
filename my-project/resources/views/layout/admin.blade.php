@@ -54,6 +54,11 @@
                {{ request()->routeIs('categories.*') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100' }}">
                 Categories
             </a>
+            <a href="{{ route('pages.index') }}"
+               class="block px-3 py-2 rounded
+               {{ request()->routeIs('pages.*') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100' }}">
+                Pages
+            </a>
         </nav>
     </aside>
 

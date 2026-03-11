@@ -19,6 +19,7 @@ return new class extends Migration
                   ->onDelete('set null');
             $table->string('name', 150);
             $table->decimal('price', 12, 2);
+            $table->decimal('sale_price', 12, 2);
             $table->integer('quantity')->default(0);
             $table->string('image')->nullable();
             $table->text('description')->nullable();

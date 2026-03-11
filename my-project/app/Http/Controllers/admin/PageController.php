@@ -1,38 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    /** 📄 Danh sách page */
     public function index()
     {
         $pages = Page::orderBy('id', 'desc')->get();
         return view('admin.pages.index', compact('pages'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    /** ➕ Form tạo page */
     public function create()
     {
         return view('admin.pages.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    /** 💾 Lưu page */
     public function store(Request $request)
     {
         $request->validate([
-            'title'   => 'required|string|max:150',
-            'link'    => 'nullable|string|max:255',
-            'content' => 'nullable|string',
+            'title'   => 'required|min:3|max:255',
+            'link'    => 'required|unique:pages,link',
+            'content' => 'nullable',
             'status'  => 'required|boolean',
         ]);
 
@@ -43,31 +38,22 @@ class PageController extends Controller
             ->with('success', 'Thêm trang thành công');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Page $page)
+    /** ✏️ Form sửa page */
+    public function edit($id)
     {
-        return view('admin.pages.show', compact('page'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Page $page)
-    {
+        $page = Page::findOrFail($id);
         return view('admin.pages.edit', compact('page'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Page $page)
+    /** 🔄 Cập nhật page */
+    public function update(Request $request, $id)
     {
+        $page = Page::findOrFail($id);
+
         $request->validate([
-            'title'   => 'required|string|max:150',
-            'link'    => 'nullable|string|max:255',
-            'content' => 'nullable|string',
+            'title'   => 'required|min:3|max:255',
+            'link'    => 'required|unique:pages,link,' . $page->id,
+            'content' => 'nullable',
             'status'  => 'required|boolean',
         ]);
 
@@ -76,17 +62,5 @@ class PageController extends Controller
         return redirect()
             ->route('pages.index')
             ->with('success', 'Cập nhật trang thành công');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Page $page)
-    {
-        $page->delete();
-
-        return redirect()
-            ->route('pages.index')
-            ->with('success', 'Xóa trang thành công');
     }
 }

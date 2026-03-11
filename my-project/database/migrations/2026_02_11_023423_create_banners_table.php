@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 100);
+        Schema::create('banners', function (Blueprint $table) {
+            $table->id(); // INT AUTO_INCREMENT PRIMARY KEY
+            $table->string('title', 150)->nullable();
+            $table->string('image', 255)->nullable();
+            $table->string('link', 255)->nullable();
+            $table->integer('position')->default(0);
             $table->tinyInteger('status')->default(1);
-            $table->timestamps(); // created_at, updated_at
+            $table->timestamps(); 
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('banners');
     }
 };

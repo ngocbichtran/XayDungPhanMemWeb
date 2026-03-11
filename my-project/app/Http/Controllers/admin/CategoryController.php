@@ -6,93 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-
 class CategoryController extends Controller
 {
-    /**
-     * Hiển thị danh sách category
-     */
+    // Lấy danh sách category
     public function index()
     {
-        $categories = Category::orderBy('id', 'desc')->get();
-        return view('admin.categories.index', compact('categories'));
-    }
+        $categories = Category::orderBy('id','desc')->get();
 
-    /**
-     * Form thêm category
-     */
-    public function create()
-    {
-        return view('admin.categories.create');
-    }
-
-    /**
-     * Lưu category mới
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|max:100|unique:category,name',
-            'status' => 'required|boolean',
-            'description' => 'required|string',
+        return response()->json([
+            'status' => true,
+            'data' => $categories
         ]);
-
-        Category::create([
-            'name' => $request->name,
-            'status' => $request->status,
-            'description' => $request->description,
-        ]);
-
-        return redirect()->route('categories.index')
-            ->with('success', 'Thêm loại sản phẩm thành công');
     }
 
-    /**
-     * Form sửa category
-     */
-    public function edit($id)
+    // Lấy chi tiết category
+    public function show($id)
     {
-        $category = Category::findOrFail($id);
-        return view('admin.categories.edit', compact('category'));
-    }
+        $category = Category::find($id);
 
-    /**
-     * Cập nhật category
-     */
-    public function update(Request $request, $id)
-    {
-        $category = Category::findOrFail($id);
-
-        $request->validate([
-            'name' => 'required|max:100|unique:category,name,' . $category->id,
-            'status' => 'required|boolean',
-        ]);
-
-        $category->update([
-            'name' => $request->name,
-            'status' => $request->status,
-        ]);
-
-        return redirect()->route('categories.index')
-            ->with('success', 'Cập nhật loại sản phẩm thành công');
-    }
-
-    /**
-     * Xóa category
-     */
-    public function destroy($id)
-    {
-        $category = Category::findOrFail($id);
-
-        // Nếu có sản phẩm thì không cho xóa
-        if ($category->products()->count() > 0) {
-            return redirect()->back()
-                ->with('error', 'Không thể xóa vì loại này đang có sản phẩm');
+        if(!$category){
+            return response()->json([
+                'status'=>false,
+                'message'=>'Không tìm thấy'
+            ]);
         }
 
-        $category->delete();
-
-        return redirect()->route('categories.index')
-            ->with('success', 'Xóa loại sản phẩm thành công');
+        return response()->json([
+            'status'=>true,
+            'data'=>$category
+        ]);
     }
 }

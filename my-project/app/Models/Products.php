@@ -17,6 +17,7 @@ class Products extends Model
         'category_id',
         'name',
         'price',
+        'sale_price',
         'quantity',
         'image',
         'description',
@@ -26,6 +27,7 @@ class Products extends Model
     // Ép kiểu dữ liệu
     protected $casts = [
         'price' => 'decimal:2',
+        'sale_price' => 'decimal:2',
         'quantity' => 'integer',
         'status' => 'boolean',
     ];

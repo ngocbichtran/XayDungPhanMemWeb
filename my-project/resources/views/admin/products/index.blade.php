@@ -8,8 +8,7 @@
 <div class="flex items-center justify-between mb-4">
     <h1 class="text-xl font-bold">Danh sách sản phẩm</h1>
 
-    <a href="{{ route('products.create') }}"
-       class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+    <a href="{{ route('products.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
         + Thêm sản phẩm
     </a>
 </div>
@@ -21,6 +20,7 @@
                 <th>ID</th>
                 <th>Tên</th>
                 <th>Giá</th>
+                <th>Giá khuyến mãi</th>
                 <th>Số lượng</th>
                 <th>Hình ảnh</th>
                 <th>Trạng thái</th>
@@ -34,16 +34,14 @@
                 <td>{{ $product->id }}</td>
                 <td>{{ $product->name }}</td>
                 <td>{{ number_format($product->price) }} đ</td>
+                  <td>{{ number_format($product->sale_price) }} đ</td>
                 <td>{{ $product->quantity }}</td>
 
                 <td class="text-center">
                     @if ($product->image_url)
-                        <img
-                            src="{{ $product->image_url }}"
-                            class="w-16 h-16 object-cover rounded mx-auto"
-                        >
+                    <img src="{{ $product->image_url }}" class="w-16 h-16 object-cover rounded mx-auto">
                     @else
-                        <span class="text-gray-400 italic">Không có ảnh</span>
+                    <span class="text-gray-400 italic">Không có ảnh</span>
                     @endif
                 </td>
 
@@ -51,34 +49,24 @@
                 {{-- STATUS --}}
                 <td>
                     @if ($product->status == 1)
-                        <span class="text-green-600 font-semibold">Hoạt động</span>
+                    <span class="text-green-600 font-semibold">Hoạt động</span>
                     @else
-                        <span class="text-red-600 font-semibold">Ẩn</span>
+                    <span class="text-red-600 font-semibold">Ẩn</span>
                     @endif
                 </td>
 
                 {{-- ACTION --}}
                 <td>
-                    <a
-                        href="{{ route('products.edit', $product->id) }}"
-                        class="text-blue-600 hover:underline"
-                    >
+                    <a href="{{ route('products.edit', $product->id) }}" class="text-blue-600 hover:underline">
                         Sửa
                     </a>
 
-                   <form
-                        action="{{ route('products.destroy', $product->id) }}"
-                        method="POST"
-                        class="inline"
-                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')"
-                    >
+                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline"
+                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
                         @csrf
                         @method('DELETE')
 
-                        <button
-                            type="submit"
-                            class="text-red-600 hover:underline"
-                        >
+                        <button type="submit" class="text-red-600 hover:underline">
                             Xóa
                         </button>
                     </form>

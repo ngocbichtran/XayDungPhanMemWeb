@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pages', function (Blueprint $table) {
            $table->id(); // BIGINT AUTO_INCREMENT
             $table->string('title', 150);
-            $table->string('link', 255)->nullable();
+            $table->string('slug')->unique();
             $table->text('content')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps(); // created_at, updated_at

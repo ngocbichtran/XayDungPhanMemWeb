@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 100);
-            $table->tinyInteger('status')->default(1);
-            $table->timestamps(); // created_at, updated_at
+       Schema::create('settings', function (Blueprint $table) {
+            $table->id(); // BIGINT AUTO_INCREMENT
+            $table->string('key_name', 100)->unique();
+            $table->text('value')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('settings');
     }
 };
