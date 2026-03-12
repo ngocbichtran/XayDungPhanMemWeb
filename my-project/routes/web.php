@@ -17,3 +17,7 @@ Route::prefix('admin')->group(function () {
     Route::get('settings', [SettingController::class, 'index']);
     Route::post('settings/update', [SettingController::class, 'update']);
 });
+
+Route::prefix('BASE_API')->group(function () {
+    Route::apiResource('users', UserTestController::class);
+});
