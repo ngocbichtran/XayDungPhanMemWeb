@@ -43,6 +43,13 @@ class ProductsController extends Controller
         ]);
     }
 
+    public function edit($id)
+{
+   $product = Products::findOrFail($id);
+
+    return response()->json($product);
+}
+
     // Chi tiết sản phẩm
     public function show($id)
     {

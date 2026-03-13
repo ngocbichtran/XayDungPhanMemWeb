@@ -55,6 +55,16 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function edit($id)
+{
+    $category = Category::findOrFail($id);
+
+    return response()->json([
+        'message' => 'Edit category',
+        'data' => $category
+    ]);
+}
+
     // Cập nhật category
     public function update(Request $request, $id)
     {

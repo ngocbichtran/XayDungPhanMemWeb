@@ -4,21 +4,21 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Users;
 
 class UserTestController extends Controller
 {
     // GET /users
     public function index()
     {
-        $users = User::all();
+        $users = Users::all();
         return response()->json($users);
     }
 
     // GET /users/1
     public function show($id)
     {
-        $users = User::findOrFail($id);
+        $users = Users::findOrFail($id);
         return response()->json($users);
     }
 
@@ -28,8 +28,8 @@ class UserTestController extends Controller
         $data = $request->validate([
             'name' => 'required|string|min:3|max:255',
         ]);
-
-        $users = User::create($data);
+ 
+        $users = Users::create($data);
 
         return response()->json([
             'message' => 'Thêm USERS thành công',
@@ -40,7 +40,7 @@ class UserTestController extends Controller
     // PUT /users/1
     public function update(Request $request, $id)
     {
-        $users = User::findOrFail($id);
+        $users = Users::findOrFail($id);
 
         $data = $request->validate([
             'name' => 'required|string|min:3|max:255',
@@ -57,7 +57,7 @@ class UserTestController extends Controller
     // DELETE /users/1
     public function destroy($id)
     {
-        $users = User::findOrFail($id);
+        $users = Users::findOrFail($id);
 
         $users->delete();
 
