@@ -1,6 +1,5 @@
 @extends('layout.admin')
 
-<<<<<<< HEAD
 @section('title', 'Cập nhật sản phẩm')
 
 @section('content')
@@ -8,7 +7,6 @@
 
     <h1 class="text-xl font-bold mb-6">Cập nhật sản phẩm</h1>
 
-    {{-- HIỂN THỊ LỖI --}}
     @if ($errors->any())
         <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
             <ul class="list-disc pl-5">
@@ -28,7 +26,6 @@
         @csrf
         @method('PUT')
 
-        {{-- NAME --}}
         <div>
             <label class="font-semibold">Tên sản phẩm</label>
             <input
@@ -39,7 +36,6 @@
             >
         </div>
 
-        {{-- PRICE + QUANTITY --}}
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="font-semibold">Giá</label>
@@ -63,7 +59,6 @@
             </div>
         </div>
 
-        {{-- DESCRIPTION --}}
         <div>
             <label class="font-semibold">Mô tả</label>
             <textarea
@@ -72,18 +67,13 @@
                 class="w-full border rounded-lg p-2"
             >{{ old('description', $product->description) }}</textarea>
         </div>
-
-        {{-- IMAGE --}}
 <div class="space-y-2">
     <label class="font-semibold">Hình ảnh</label>
 
-    {{-- Upload file --}}
     <input type="file" name="image" class="w-full border rounded p-2">
 
-    {{-- OR --}}
     <div class="text-center text-gray-400 text-sm">— hoặc —</div>
 
-    {{-- Nhập link / base64 --}}
     <input
         type="text"
         name="image_url"
@@ -92,7 +82,6 @@
         class="w-full border rounded p-2"
     >
 
-    {{-- Preview ảnh hiện tại --}}
     @if ($product->image_url)
         <div class="mt-3">
             <p class="text-sm text-gray-600 mb-1">Ảnh hiện tại:</p>
@@ -104,8 +93,6 @@
     @endif
 </div>
 
-
-        {{-- STATUS --}}
         <div>
             <label class="font-semibold">Trạng thái</label>
             <select name="status" class="w-full border rounded-lg p-2">
@@ -118,7 +105,6 @@
             </select>
         </div>
 
-        {{-- ACTION --}}
         <div class="flex justify-end gap-3 mt-4">
             <a
                 href="{{ route('products.index') }}"

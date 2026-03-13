@@ -1,6 +1,8 @@
 <?php
 
+
 namespace App\Http\Controllers\admin;
+
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -9,90 +11,108 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Hiển thị danh sách category
-     */
+
+
+    // Danh sách category
     public function index()
     {
-        $categories = Category::orderBy('id', 'desc')->get();
-        return view('admin.categories.index', compact('categories'));
+        $categories = Category::orderBy('id','desc')->get();
+
+
+        return response()->json($categories);
     }
 
-    /**
-     * Form thêm category
-     */
-    public function create()
-    {
-        return view('admin.categories.create');
-    }
 
-    /**
-     * Lưu category mới
-     */
+    // Thêm category
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:100|unique:categories,name',
+            'name' => 'required|string|max:100|unique:categories,name',
             'status' => 'required|boolean',
-            'description' => 'required|string',
+            'description' => 'nullable|string|max:500',
         ]);
 
-        Category::create([
+
+        $category = Category::create([
             'name' => $request->name,
             'status' => $request->status,
             'description' => $request->description,
         ]);
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Thêm loại sản phẩm thành công');
+
+        return response()->json([
+            'message' => 'Thêm category thành công',
+            'data' => $category
+        ]);
     }
 
-    /**
-     * Form sửa category
-     */
-    public function edit($id)
+
+    // Chi tiết category
+    public function show($id)
     {
-        $category = Category::findOrFail($id);
-        return view('admin.categories.edit', compact('category'));
+        $category = Category::find($id);
+
+
+        if(!$category){
+            return response()->json([
+                'message' => 'Không tìm thấy category'
+            ],404);
+        }
+
+
+        return response()->json([
+            'message' => 'Chi tiết category',
+            'data' => $category
+        ]);
     }
 
-    /**
-     * Cập nhật category
-     */
+
+    // Cập nhật category
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
 
+
         $request->validate([
-            'name' => 'required|max:100|unique:categories,name,' . $category->id,
+            'name' => 'required|string|max:100|unique:categories,name,' . $category->id,
             'status' => 'required|boolean',
+            'description' => 'nullable|string|max:500',
         ]);
+
 
         $category->update([
             'name' => $request->name,
             'status' => $request->status,
+            'description' => $request->description,
         ]);
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Cập nhật loại sản phẩm thành công');
+
+        return response()->json([
+            'message' => 'Cập nhật category thành công',
+            'data' => $category
+        ]);
     }
 
-    /**
-     * Xóa category
-     */
+
+    // Xóa category
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
 
-        // Nếu có sản phẩm thì không cho xóa
+
+        // Nếu category có sản phẩm thì không cho xóa
         if ($category->products()->count() > 0) {
-            return redirect()->back()
-                ->with('error', 'Không thể xóa vì loại này đang có sản phẩm');
+            return response()->json([
+                'message' => 'Không thể xóa vì category đang có sản phẩm'
+            ],400);
         }
+
 
         $category->delete();
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Xóa loại sản phẩm thành công');
+
+        return response()->json([
+            'message' => 'Xóa category thành công'
+        ]);
     }
 }

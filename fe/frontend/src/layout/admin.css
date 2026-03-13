@@ -1,0 +1,38 @@
+.admin-layout{
+  display:flex;
+  min-height:100vh;
+  background:#f3f4f6;
+}
+
+.sidebar{
+  width:260px;
+  background:white;
+  border-right:1px solid #e5e7eb;
+  padding:20px;
+}
+
+.sidebar-title{
+  font-weight:bold;
+  color:#2563eb;
+  margin-bottom:20px;
+}
+
+.menu-link{
+  display:block;
+  padding:12px;
+  border-radius:6px;
+  text-decoration:none;
+  color:#333;
+}
+
+.menu-link:hover{
+  background:#f3f4f6;
+}
+
+.active-link{
+  display:block;
+  padding:12px;
+  border-radius:6px;
+  background:#dbeafe;
+  color:#2563eb;
+}

@@ -1,0 +1,128 @@
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.top-bar h1{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.btn-add{
+    background:#2563eb;
+    color:white;
+    padding:10px 16px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+}
+
+.btn-add:hover{
+    background:#1d4ed8;
+}
+
+.table-box{
+    background:white;
+    padding:20px;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.product-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+.product-table th,
+.product-table td{
+    border-bottom:1px solid #e5e7eb;
+    padding:10px;
+    text-align:center;
+}
+
+.product-table thead{
+    background:#f9fafb;
+}
+
+.product-img{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.no-img{
+    color:#9ca3af;
+    font-style:italic;
+}
+
+.status-active{
+    color:#16a34a;
+    font-weight:600;
+}
+
+.status-hide{
+    color:#dc2626;
+    font-weight:600;
+}
+
+.actions button{
+    margin:0 5px;
+    border:none;
+    background:none;
+    cursor:pointer;
+}
+
+.actions .edit{
+    color:#2563eb;
+}
+
+.actions .delete{
+    color:#dc2626;
+}
+
+/* cate-create */
+.category-container{
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.category-form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.category-form label{
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.category-form input,
+.category-form textarea,
+.category-form select{
+    width:100%;
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+.btn-save{
+    background:#2563eb;
+    color:white;
+    padding:10px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.btn-save:hover{
+    background:#1e4ed8;
+}
