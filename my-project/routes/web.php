@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\PageController;
-
+use App\Http\Controllers\admin\UserTestController;
 
 
 Route::prefix('admin')->group(function () {
