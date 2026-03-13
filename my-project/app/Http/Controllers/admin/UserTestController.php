@@ -11,14 +11,14 @@ class UserTestController extends Controller
     // GET /users
     public function index()
     {
-        $users = Users::all();
+        $users = User::all();
         return response()->json($users);
     }
 
     // GET /users/1
     public function show($id)
     {
-        $users = Users::findOrFail($id);
+        $users = User::findOrFail($id);
         return response()->json($users);
     }
 
@@ -29,7 +29,7 @@ class UserTestController extends Controller
             'name' => 'required|string|min:3|max:255',
         ]);
 
-        $users = Users::create($data);
+        $users = User::create($data);
 
         return response()->json([
             'message' => 'Thêm USERS thành công',
@@ -40,7 +40,7 @@ class UserTestController extends Controller
     // PUT /users/1
     public function update(Request $request, $id)
     {
-        $users = Users::findOrFail($id);
+        $users = User::findOrFail($id);
 
         $data = $request->validate([
             'name' => 'required|string|min:3|max:255',
@@ -57,7 +57,7 @@ class UserTestController extends Controller
     // DELETE /users/1
     public function destroy($id)
     {
-        $users = Users::findOrFail($id);
+        $users = User::findOrFail($id);
 
         $users->delete();
 
