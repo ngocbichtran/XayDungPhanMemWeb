@@ -6,8 +6,29 @@ import "./userstest.css";
 function UsersIndex() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  const handleDelete = (id) => {
+
+    if (!window.confirm("Bạn có chắc muốn xóa user này không?")) return;
+
+    axios.delete(`https://xaydungphanmemweb-umwx.onrender.com/BASE_API/users/${id}`)
+      .then(() => {
+
+        // Cách 1: lọc state (nhanh hơn reload API)
+        setUsers(prev => prev.filter(u => u.id !== id));
+
+        alert("Xóa thành công");
+
+      })
+      .catch(err => {
+        console.error("Lỗi xóa:", err.response || err);
+        alert("Xóa thất bại");
+      });
+
+  };
   useEffect(() => {
+    setLoading(true);
     axios.get("https://xaydungphanmemweb-umwx.onrender.com/BASE_API/users", {
       headers: {
         Accept: "application/json"
@@ -19,6 +40,9 @@ function UsersIndex() {
       })
       .catch(err => {
         console.error("Lỗi chi tiết:", err.response || err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -37,40 +61,50 @@ function UsersIndex() {
 
       <div className="table-box">
 
-        <table className="product-table">
+        {loading ? (
+          <div className="loading">
+            Đang tải danh sách user...
+          </div>
+        ) : (
 
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Tên</th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
+          <table className="product-table">
 
-          <tbody>
-            {users.map((p) => (
-              <tr key={p.id}>
-                <td>{p.id}</td>
-                <td>{p.name}</td>
-
-                <td className="actions">
-                  <button
-                    className="edit"
-                    onClick={() => navigate(`/users/edit/${p.id}`)}
-                  >
-                    Sửa
-                  </button>
-                  <button className="delete">Xóa</button>
-                </td>
-
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Hành động</th>
               </tr>
-            ))}
-          </tbody>
+            </thead>
 
-        </table>
+            <tbody>
+              {users.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.id}</td>
+                  <td>{p.name}</td>
 
+                  <td className="actions">
+                    <button
+                      className="edit"
+                      onClick={() => navigate(`/users/edit/${p.id}`)}
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      className="delete"
+                      onClick={() => handleDelete(p.id)}
+                    >
+                      Xóa
+                    </button>
+                  </td>
+
+                </tr>
+              ))}
+            </tbody>
+
+          </table>
+        )}
       </div>
-
     </div>
   );
 }

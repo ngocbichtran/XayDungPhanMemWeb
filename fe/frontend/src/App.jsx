@@ -9,6 +9,7 @@ import CategoryCreate from "./admin/categories/create";
 import EditCategory from "./admin/categories/edit";
 import UserCreate from "./admin/userstest/create";
 import UserEdit from "./admin/userstest/edit";
+import Dashboard from "./Dashboard";
 function App() {
   return (
     <BrowserRouter>
@@ -16,12 +17,13 @@ function App() {
       <Routes>
 
         <Route path="/" element={<AdminLayout />}>
-
+         <Route index element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/products" element={<ProductIndex />} />
           <Route path="/categories" element={<CategoriesIndex />} />
           <Route path="BASE_FE/users" element={<UsersIndex />} />
           <Route path="/users/create" element={<UserCreate />} />
-             <Route path="/users/edit/:id" element={<UserEdit />} />
+          <Route path="/users/edit/:id" element={<UserEdit />} />
           <Route path="/products/create" element={<CreateProduct />} />
           <Route path="/products/edit/:id" element={<EditProduct />} />
           <Route path="/categories/create" element={<CategoryCreate />} />

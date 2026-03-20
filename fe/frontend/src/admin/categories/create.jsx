@@ -12,23 +12,57 @@ function CategoryCreate() {
     description: "",
     status: 1
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
+
+    const { name, value } = e.target;
+
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [name]: name === "status" ? Number(value) : value
     });
+
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    axios.post("http://127.0.0.1:8000/admin/categories", form)
-      .then(() => {
-        alert("Thêm loại sản phẩm thành công");
-        navigate("/categories");
-      })
-      .catch(err => console.log(err));
+    if (!form.name.trim()) {
+      alert("Tên loại sản phẩm không được để trống");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await axios.post(
+        "https://xaydungphanmemweb-umwx.onrender.com/admin/categories",
+        form,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      alert("Thêm loại sản phẩm thành công");
+
+      navigate("/categories");
+
+    } catch (error) {
+
+      console.error("Lỗi:", error.response || error);
+
+      alert("Không thể thêm loại sản phẩm");
+
+    }
+    finally {
+
+      setLoading(false);
+
+    }
+
   };
 
   return (
@@ -38,17 +72,18 @@ function CategoryCreate() {
 
       <form onSubmit={handleSubmit} className="category-form">
 
-        <div>
+        <div className="form-group">
           <label>Tên loại</label>
           <input
             type="text"
             name="name"
+            required
             value={form.name}
             onChange={handleChange}
           />
         </div>
 
-        <div>
+        <div className="form-group">
           <label>Mô tả</label>
           <textarea
             name="description"
@@ -57,21 +92,37 @@ function CategoryCreate() {
           />
         </div>
 
-        <div>
+        <div className="form-group">
           <label>Trạng thái</label>
           <select
             name="status"
             value={form.status}
             onChange={handleChange}
           >
-            <option value="1">Hoạt động</option>
-            <option value="0">Ẩn</option>
+            <option value={1}>Hoạt động</option>
+            <option value={0}>Ẩn</option>
           </select>
         </div>
 
-        <button type="submit" className="btn-save">
-          Lưu
-        </button>
+        <div className="form-buttons">
+
+          <button
+            type="button"
+            className="btn-cancel"
+            onClick={() => navigate("/categories")}
+          >
+            Hủy
+          </button>
+
+          <button
+            type="submit"
+            className="btn-save"
+            disabled={loading}
+          >
+            {loading ? "Đang lưu..." : "Lưu"}
+          </button>
+
+        </div>
 
       </form>
 

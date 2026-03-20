@@ -10,7 +10,14 @@ function AdminLayout() {
         <h2 className="sidebar-title">Shop Admin</h2>
 
         <nav>
-
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? "active-link" : "menu-link"
+            }
+          >
+            Dashboard
+          </NavLink>
           <NavLink
             to="/products"
             className={({ isActive }) =>
@@ -30,15 +37,6 @@ function AdminLayout() {
           </NavLink>
 
           <NavLink
-            to="/pages"
-            className={({ isActive }) =>
-              isActive ? "active-link" : "menu-link"
-            }
-          >
-            Pages
-          </NavLink>
-
-          <NavLink
             to="BASE_FE/users"
             className={({ isActive }) =>
               isActive ? "active-link" : "menu-link"
@@ -46,6 +44,7 @@ function AdminLayout() {
           >
             Users Test
           </NavLink>
+
 
         </nav>
       </aside>

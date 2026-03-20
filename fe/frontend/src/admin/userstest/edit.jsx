@@ -12,13 +12,16 @@ function UserEdit() {
     name: ""
   });
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
 
-    axios.get(`https://xaydungphanmemweb-umwx.onrender.com/BASE_API/users/${id}`, {
-      headers: {
-        Accept: "application/json"
+    axios.get(
+      `https://xaydungphanmemweb-umwx.onrender.com/BASE_API/users/${id}`,
+      {
+        headers: { Accept: "application/json" }
       }
-    })
+    )
       .then(res => {
 
         const u = res.data.data ? res.data.data : res.data;
@@ -28,40 +31,63 @@ function UserEdit() {
         });
 
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.error("Lỗi load user:", err.response || err);
+      });
 
   }, [id]);
 
   const handleChange = (e) => {
 
+    const { name, value } = e.target;
+
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [name]: value
     });
 
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
 
     e.preventDefault();
 
-    axios.put(
-      `https://xaydungphanmemweb-umwx.onrender.com/BASE_API/users/${id}`,
-      form,
-      {
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
+    if (!form.name.trim()) {
+      alert("Tên user không được để trống");
+      return;
+    }
+
+    try {
+
+      setLoading(true);
+
+      await axios.post(
+        `https://xaydungphanmemweb-umwx.onrender.com/BASE_API/users/${id}`,
+        {
+          ...form,
+          _method: "PUT"
+        },
+        {
+          headers: {
+            Accept: "application/json"
+          }
         }
-      }
-    )
-      .then(() => {
+      );
 
-        alert("Cập nhật user thành công");
-        navigate("/users");
+      alert("Cập nhật user thành công");
 
-      })
-      .catch(err => console.log(err));
+      navigate("/BASE_FE/users");
+
+    } catch (error) {
+
+      console.error("Lỗi cập nhật:", error.response || error);
+      alert("Không thể cập nhật user");
+
+    } finally {
+
+      setLoading(false);
+
+    }
 
   };
 
@@ -76,6 +102,7 @@ function UserEdit() {
       <form className="form-box" onSubmit={handleSubmit}>
 
         <div className="form-group">
+
           <label>Tên user</label>
 
           <input
@@ -85,6 +112,7 @@ function UserEdit() {
             onChange={handleChange}
             required
           />
+
         </div>
 
         <div className="form-actions">
@@ -92,7 +120,7 @@ function UserEdit() {
           <button
             type="button"
             className="btn-cancel"
-            onClick={() => navigate("/users")}
+            onClick={() => navigate("/BASE_FE/users")}
           >
             Hủy
           </button>
@@ -100,8 +128,9 @@ function UserEdit() {
           <button
             type="submit"
             className="btn-save"
+            disabled={loading}
           >
-            Cập nhật
+            {loading ? "Đang cập nhật..." : "Cập nhật"}
           </button>
 
         </div>

@@ -11,33 +11,58 @@ function UserCreate() {
     name: ""
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
+
+    const { name, value } = e.target;
+
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    axios.post(
-      "https://xaydungphanmemweb-umwx.onrender.com/BASE_API/users",
-      form,
-      {
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
+    if (!form.name.trim()) {
+      alert("Tên user không được để trống");
+      return;
+    }
+
+    try {
+
+      setLoading(true);
+
+      await axios.post(
+        "https://xaydungphanmemweb-umwx.onrender.com/BASE_API/users",
+        form,
+        {
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          }
         }
-      }
-    )
-      .then(() => {
-        alert("Thêm user thành công");
-        navigate("/users");
-      })
-      .catch(err => {
-        console.error("Lỗi:", err.response || err);
-      });
+      );
+
+      alert("Thêm user thành công");
+
+      navigate("/BASE_FE/users");
+
+    } catch (error) {
+
+      console.error("Lỗi:", error.response || error);
+      alert("Không thể thêm user");
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
   };
 
   return (
@@ -50,6 +75,7 @@ function UserCreate() {
       <form className="form-box" onSubmit={handleSubmit}>
 
         <div className="form-group">
+
           <label>Tên user</label>
 
           <input
@@ -59,6 +85,7 @@ function UserCreate() {
             onChange={handleChange}
             required
           />
+
         </div>
 
         <div className="form-actions">
@@ -74,8 +101,9 @@ function UserCreate() {
           <button
             type="submit"
             className="btn-save"
+            disabled={loading}
           >
-            Lưu
+            {loading ? "Đang lưu..." : "Lưu"}
           </button>
 
         </div>

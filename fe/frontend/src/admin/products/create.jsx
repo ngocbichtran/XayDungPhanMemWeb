@@ -1,8 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./products.css";
 
 function CreateProduct() {
+
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: "",
@@ -11,31 +14,63 @@ function CreateProduct() {
     quantity: "",
     description: "",
     image: null,
-    status: "active"
+    status: 1
   });
-
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
-    if (e.target.name === "image") {
-      setForm({ ...form, image: e.target.files[0] });
+
+    const { name, value, files } = e.target;
+
+    if (name === "image") {
+      setForm({ ...form, image: files[0] });
     } else {
-      setForm({ ...form, [e.target.name]: e.target.value });
+      setForm({ ...form, [name]: value });
     }
+
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    const data = new FormData();
+    try {
+      setLoading(true);
+      const data = new FormData();
 
-    Object.keys(form).forEach(key => {
-      data.append(key, form[key]);
-    });
+      data.append("name", form.name);
+      data.append("price", form.price);
+      data.append("sale_price", form.sale_price);
+      data.append("quantity", form.quantity);
+      data.append("description", form.description);
+      data.append("status", form.status);
 
-    axios.post("http://127.0.0.1:8000/api/products", data)
-      .then(() => {
-        alert("Thêm sản phẩm thành công");
-      })
-      .catch(err => console.log(err));
+      if (form.image) {
+        data.append("image", form.image);
+      }
+
+      await axios.post(
+        "https://xaydungphanmemweb-umwx.onrender.com/admin/products",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      );
+
+      alert("Thêm sản phẩm thành công");
+
+      navigate("/products");
+
+    } catch (error) {
+      console.log(error);
+      alert("Lỗi khi thêm sản phẩm");
+    }
+    finally {
+
+      setLoading(false);
+
+    }
   };
 
   return (
@@ -117,14 +152,36 @@ function CreateProduct() {
           />
         </div>
 
+        <div className="form-group">
+          <label>Status</label>
+          <select
+            name="status"
+            value={form.status}
+            onChange={handleChange}
+          >
+            <option value="1">Active</option>
+            <option value="0">Hidden</option>
+          </select>
+        </div>
+
         <div className="form-buttons">
-          <button type="button" className="btn-cancel">
+
+          <button
+            type="button"
+            className="btn-cancel"
+            onClick={() => navigate("/products")}
+          >
             Cancel
           </button>
 
-          <button type="submit" className="btn-submit">
-            Lưu
+          <button
+            type="submit"
+            className="btn-save"
+            disabled={loading}
+          >
+            {loading ? "Đang lưu..." : "Lưu"}
           </button>
+
         </div>
 
       </form>
