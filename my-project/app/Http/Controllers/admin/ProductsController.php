@@ -61,7 +61,6 @@ class ProductsController extends Controller
     public function update(Request $request, $id)
     {
         $product = Products::findOrFail($id);
-
         $request->validate([
             'name' => 'required|string|min:3|max:255',
             'price' => 'required|numeric|min:0',
@@ -70,20 +69,14 @@ class ProductsController extends Controller
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-
         $data = $request->except('image');
-
         if ($request->hasFile('image')) {
-
             if ($product->image && Storage::disk('public')->exists($product->image)) {
                 Storage::disk('public')->delete($product->image);
             }
-
             $data['image'] = $request->file('image')->store('products', 'public');
         }
-
         $product->update($data);
-
         return response()->json([
             'message' => 'Cập nhật thành công',
             'data' => $product
