@@ -13,7 +13,13 @@ class ProductsController extends Controller
     // Danh sách sản phẩm
     public function index()
     {
-        $products = Products::all();
+        $products = Products::all()->map(function ($product) {
+            if ($product->image) {
+                $product->image = asset('storage/' . $product->image);
+            }
+            return $product;
+        });
+
         return response()->json($products);
     }
 
