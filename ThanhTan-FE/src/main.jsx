@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import './index.css'; // DÒNG QUAN TRỌNG NHẤT ĐỂ HIỂN THỊ GIAO DIỆN
+import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
+import './index.css'; 
 
-// Import 2 màn hình quản lý đơn hàng
+// 1. Nhớ Import đầy đủ 3 file
 import OrderList from './components/Admin/OrderList';
+import OrderCreate from './components/Admin/OrderCreate'; // THÊM DÒNG NÀY
 import OrderDetail from './components/Admin/OrderDetail';
 
 function App() {
@@ -18,8 +19,13 @@ function App() {
 
                 <div className="bg-white p-6 rounded shadow">
                     <Routes>
-                        <Route path="/" element={<h2 className="text-2xl font-bold">Chào mừng đến với Bảng Điều Khiển Admin</h2>} />
+                        <Route path="/" element={<Navigate to="/admin/orders" replace />} />
+                        
                         <Route path="/admin/orders" element={<OrderList />} />
+
+                        {/* 2. DÒNG NÀY LÀ CỨU TINH: Phải nằm trên :id */}
+                        <Route path="/admin/orders/create" element={<OrderCreate />} />
+
                         <Route path="/admin/orders/:id" element={<OrderDetail />} />
                     </Routes>
                 </div>

@@ -15,12 +15,9 @@ class OrderController extends Controller
     {
         $query = Order::with('user');
 
-        // Lọc theo trạng thái vận chuyển
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
         }
-
-        // ĐÃ BỎ: Lọc theo payment_status vì DB không có cột này
 
         if ($request->has('search') && $request->search != '') {
             $searchTerm = $request->search;
@@ -42,41 +39,46 @@ class OrderController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'shipping_address' => 'required|string',
-            // ĐÃ BỎ: validate phone
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
-            'items.*.price' => 'required|numeric|min:0'
         ]);
 
         DB::beginTransaction();
         try {
             $orderCode = 'ORD-' . time();
             $totalAmount = 0;
+            $orderItems = [];
 
             foreach ($request->items as $item) {
-                $totalAmount += $item['quantity'] * $item['price'];
+                $product = Product::where('id', $item['product_id'])->lockForUpdate()->first();
+
+                if ($product->quantity < $item['quantity']) {
+                    throw new \Exception("Sản phẩm '{$product->name}' chỉ còn {$product->quantity} sản phẩm.");
+                }
+
+                $totalAmount += $item['quantity'] * $product->price;
+
+                $orderItems[] = [
+                    'product_id' => $product->id,
+                    'quantity'   => $item['quantity'],
+                    'price'      => $product->price,
+                ];
+
+                $product->decrement('quantity', $item['quantity']);
             }
 
-            // CHỈ LƯU: Những trường chắc chắn có trong DB của bạn
             $order = Order::create([
-                'order_code'      => $orderCode,
-                'user_id'         => $request->user_id,
+                'order_code'       => $orderCode,
+                'user_id'          => $request->user_id,
                 'shipping_address' => $request->shipping_address,
-                'total_amount'    => $totalAmount,
-                'status'          => 'pending',
-                'payment_method'  => 'cod',
+                'total_amount'     => $totalAmount,
+                'status'           => 'pending',
+                'payment_method'   => 'cod',
             ]);
 
-            $orderItems = [];
-            foreach ($request->items as $item) {
-                $orderItems[] = [
-                    'order_id'   => $order->id,
-                    'product_id' => $item['product_id'],
-                    'quantity'   => $item['quantity'],
-                    'price'      => $item['price'],
-
-                ];
+            foreach ($orderItems as &$orderItem) {
+                $orderItem['order_id'] = $order->id;
             }
             DB::table('order_items')->insert($orderItems);
 
@@ -85,7 +87,7 @@ class OrderController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => 'Lỗi: ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Lỗi: ' . $e->getMessage()], 400);
         }
     }
 
@@ -96,7 +98,7 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
-    // 4. CẬP NHẬT TRẠNG THÁI
+    // 4. CẬP NHẬT TRẠNG THÁI (Đã thêm Ràng buộc State Machine)
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
@@ -105,46 +107,83 @@ class OrderController extends Controller
 
         $order = Order::with('items')->findOrFail($id);
 
-        // Trừ kho khi chuyển sang processing
-        if ($request->status == 'processing' && $order->status == 'pending') {
-            foreach ($order->items as $item) {
-                Product::where('id', $item->product_id)->decrement('quantity', $item->quantity);
-            }
+        $oldStatus = $order->status;
+        $newStatus = $request->status;
+
+        // Bỏ qua nếu không có sự thay đổi
+        if ($oldStatus === $newStatus) {
+            return response()->json(['message' => 'Trạng thái không thay đổi!'], 200);
         }
 
-        // Hoàn kho khi hủy
-        if ($request->status == 'cancelled' && in_array($order->status, ['processing', 'shipped'])) {
-            foreach ($order->items as $item) {
-                Product::where('id', $item->product_id)->increment('quantity', $item->quantity);
-            }
+        // Định nghĩa luồng trạng thái hợp lệ (State Machine)
+        $allowedTransitions = [
+            'pending'    => ['processing', 'cancelled'],
+            'processing' => ['shipped', 'cancelled'],
+            'shipped'    => ['delivered', 'cancelled'],
+            'delivered'  => [], // Chốt đơn, không cho sửa
+            'cancelled'  => [], // Đã hủy, không cho đổi lại
+        ];
+
+        // Kiểm tra ràng buộc
+        if (!in_array($newStatus, $allowedTransitions[$oldStatus])) {
+            return response()->json([
+                'message' => "Lỗi nghiệp vụ: Không thể chuyển đơn hàng từ [" . strtoupper($oldStatus) . "] sang [" . strtoupper($newStatus) . "]."
+            ], 400);
         }
 
-        $order->status = $request->status;
+        // Xử lý nghiệp vụ kho khi HỦY ĐƠN
+        if ($newStatus === 'cancelled') {
+            $this->restoreStock($order);
+        }
+
+        $order->status = $newStatus;
         $order->save();
 
-        return response()->json(['message' => 'Cập nhật thành công!']);
+        return response()->json(['message' => 'Cập nhật trạng thái thành công!']);
     }
 
-    // 5. XÓA ĐƠN
+    // 5. "XÓA" ĐƠN HÀNG (Hủy đơn mềm)
     public function destroy($id)
     {
-        $order = Order::findOrFail($id);
-        if (in_array($order->status, ['processing', 'shipped'])) {
-            return response()->json(['message' => 'Không thể xóa đơn đang giao!'], 403);
+        $order = Order::with('items')->findOrFail($id);
+
+        if (in_array($order->status, ['shipped', 'delivered'])) {
+            return response()->json(['message' => 'Không thể can thiệp đơn hàng đang/đã giao!'], 403);
         }
-        $order->items()->delete();
-        $order->delete();
-        return response()->json(['message' => 'Đã xóa đơn hàng!']);
+
+        if ($order->status != 'cancelled') {
+            $this->restoreStock($order);
+
+            $order->status = 'cancelled';
+            $order->save();
+            return response()->json(['message' => 'Đã chuyển đơn hàng sang trạng thái Hủy!']);
+        }
+
+        return response()->json(['message' => 'Đơn hàng này đã bị hủy từ trước!'], 400);
     }
 
     // 6. THỐNG KÊ
     public function stats()
     {
         return response()->json([
-            'total_orders'   => Order::count(),
-            'total_revenue'  => Order::sum('total_amount'), // Tính tổng tất cả vì không có payment_status
-            'pending_orders' => Order::where('status', 'pending')->count(),
-            'unpaid_orders'  => 0, // Tạm thời để 0 vì DB không có cột check thanh toán
+            'total_orders'     => Order::count(),
+            'total_revenue'    => Order::where('status', 'delivered')->sum('total_amount'),
+            'pending_orders'   => Order::where('status', 'pending')->count(),
+            'cancelled_orders' => Order::where('status', 'cancelled')->count(),
         ]);
+    }
+
+    // ==========================================
+    // CÁC HÀM PRIVATE HỖ TRỢ DÙNG CHUNG
+    // ==========================================
+
+    /**
+     * Hoàn lại số lượng sản phẩm vào kho khi đơn hàng bị hủy
+     */
+    private function restoreStock($order)
+    {
+        foreach ($order->items as $item) {
+            Product::where('id', $item->product_id)->increment('quantity', $item->quantity);
+        }
     }
 }

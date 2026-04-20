@@ -1,6 +1,7 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import OrderList from './components/Admin/OrderList';
 import OrderDetail from './components/Admin/OrderDetail';
+import OrderCreate from './components/Admin/OrderCreate'; // Import chuẩn file tạo đơn
 
 function App() {
     return (
@@ -18,15 +19,16 @@ function App() {
             {/* Vùng hiển thị nội dung chính */}
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <Routes>
-                    {/* Trang chủ: Tự động chuyển hướng vào danh sách đơn hàng */}
                     <Route path="/" element={<Navigate to="/admin/orders" replace />} />
                     
-                    {/* Các route của Admin */}
                     <Route path="/admin/orders" element={<OrderList />} />
+                    
+                    {/* BẮT BUỘC: Route create phải nằm trên Route :id */}
+                    <Route path="/admin/orders/create" element={<OrderCreate />} />
+                    
                     <Route path="/admin/orders/:id" element={<OrderDetail />} />
 
-                    {/* Route 404 cho Frontend */}
-                    <Route path="*" element={<div className="text-center py-10">404 - Không tìm thấy trang này</div>} />
+                    <Route path="*" element={<div className="text-center py-10 font-bold text-gray-500">404 - Không tìm thấy trang này</div>} />
                 </Routes>
             </div>
         </div>

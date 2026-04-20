@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-// 1. THAY ĐỔI: Sử dụng api thay vì axios mặc định
 import api from '../../api/axios'; 
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const OrderDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [order, setOrder] = useState(null);
     const [newStatus, setNewStatus] = useState('');
-    const [newPaymentStatus, setNewPaymentStatus] = useState('');
 
     useEffect(() => {
         fetchOrderDetail();
@@ -16,13 +14,10 @@ const OrderDetail = () => {
 
     const fetchOrderDetail = async () => {
         try {
-            // 2. THAY ĐỔI: Bỏ địa chỉ localhost, api sẽ tự nối link Render
             const response = await api.get(`/admin/orders/${id}`);
-            // Đảm bảo lấy đúng data (Laravel thường bọc trong response.data.data)
             const orderData = response.data.data || response.data;
             setOrder(orderData);
             setNewStatus(orderData.status);
-            setNewPaymentStatus(orderData.payment_status);
         } catch (error) {
             console.error('Lỗi tải chi tiết đơn', error);
         }
@@ -30,10 +25,8 @@ const OrderDetail = () => {
 
     const handleUpdateStatus = async () => {
         try {
-            // 3. THAY ĐỔI: Sử dụng api.put và đường dẫn tương đối
             await api.put(`/admin/orders/${id}/status`, {
-                status: newStatus,
-                payment_status: newPaymentStatus
+                status: newStatus
             });
             alert('🎉 Cập nhật trạng thái thành công!');
             fetchOrderDetail();
@@ -43,7 +36,26 @@ const OrderDetail = () => {
         }
     };
 
+    const handleDeleteOrder = async () => {
+        if (!window.confirm('🚨 Bạn có chắc chắn muốn HỦY đơn hàng này không? Sản phẩm sẽ được hoàn lại vào kho!')) return;
+
+        try {
+            await api.delete(`/admin/orders/${id}`);
+            alert('🛑 Đã hủy đơn hàng thành công!');
+            fetchOrderDetail(); 
+        } catch (error) {
+            alert('Lỗi: ' + (error.response?.data?.message || 'Không thể can thiệp đơn hàng này'));
+            console.error('Lỗi khi hủy', error);
+        }
+    };
+
     if (!order) return <div className="text-center py-10">Đang tải dữ liệu...</div>;
+
+    // Biến kiểm tra: Đơn hàng đã chốt sổ chưa? (Không cho phép sửa nữa)
+    const isTerminalState = ['delivered', 'cancelled'].includes(order.status);
+    
+    // Biến kiểm tra: Admin có thay đổi trạng thái trong Dropdown chưa?
+    const hasStatusChanged = newStatus !== order.status;
 
     return (
         <div>
@@ -51,25 +63,42 @@ const OrderDetail = () => {
                 &larr; Quay lại danh sách
             </button>
             
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Chi tiết Đơn Hàng {order.order_code}</h2>
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+                <h2 className="text-2xl font-bold text-gray-800">Chi tiết Đơn Hàng {order.order_code}</h2>
+                
+                {/* Nút Hủy hiển thị khi đơn hàng chưa bị khóa (chưa giao thành công, chưa bị hủy) */}
+                {!isTerminalState && (
+                    <button 
+                        onClick={handleDeleteOrder}
+                        className="bg-red-50 hover:bg-red-600 text-red-600 hover:text-white border border-red-200 px-4 py-2 rounded-lg font-bold transition-colors shadow-sm"
+                    >
+                        🛑 HỦY ĐƠN HÀNG
+                    </button>
+                )}
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {/* Thông tin khách hàng */}
                 <div className="border border-gray-200 p-5 rounded-lg shadow-sm bg-gray-50">
                     <h3 className="font-bold text-lg border-b pb-2 mb-3 text-gray-700 uppercase text-sm">Thông tin khách hàng</h3>
-                    <p className="mb-2"><strong>👤 Tên:</strong> {order.user?.full_name || 'Khách vãng lai'}</p>
+                    <p className="mb-2"><strong>👤 Tên:</strong> {order.user?.name || 'Khách vãng lai'}</p>
                     <p className="mb-2"><strong>📍 Địa chỉ:</strong> {order.shipping_address}</p>
-                    <p><strong>💳 P.Thức thanh toán:</strong> {(order.payment_method || '').toUpperCase()}</p>
+                    <p><strong>💳 P.Thức thanh toán:</strong> {(order.payment_method || 'Chưa cập nhật').toUpperCase()}</p>
                 </div>
 
+                {/* Cập nhật trạng thái */}
                 <div className="border border-blue-200 p-5 rounded-lg shadow-sm bg-blue-50">
                     <h3 className="font-bold text-lg border-b border-blue-200 pb-2 mb-3 text-blue-800 uppercase text-sm">Cập nhật trạng thái</h3>
                     <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-2">
                             <span className="w-32 font-semibold text-xs text-gray-600">VẬN CHUYỂN:</span>
                             <select
-                                className="border border-gray-300 p-2 rounded w-full text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                className={`border p-2 rounded w-full text-sm outline-none transition-colors
+                                    ${isTerminalState ? 'bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'}
+                                `}
                                 value={newStatus}
                                 onChange={(e) => setNewStatus(e.target.value)}
+                                disabled={isTerminalState} // Khóa Dropdown nếu đã chốt sổ
                             >
                                 <option value="pending">Chờ xử lý</option>
                                 <option value="processing">Đang xử lý (Trừ kho)</option>
@@ -79,33 +108,25 @@ const OrderDetail = () => {
                             </select>
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <span className="w-32 font-semibold text-xs text-gray-600">THANH TOÁN:</span>
-                            <select
-                                className="border border-gray-300 p-2 rounded w-full text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                                value={newPaymentStatus}
-                                onChange={(e) => setNewPaymentStatus(e.target.value)}
-                            >
-                                <option value="unpaid">Chưa thanh toán</option>
-                                <option value="paid">Đã thanh toán</option>
-                                <option value="failed">Lỗi thanh toán</option>
-                            </select>
-                        </div>
-
                         <button
                             onClick={handleUpdateStatus}
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded transition mt-2 text-sm shadow-sm"
+                            disabled={isTerminalState || !hasStatusChanged} // Khóa nút nếu chưa đổi status hoặc đã chốt sổ
+                            className={`font-bold px-4 py-2 rounded transition mt-2 text-sm shadow-sm
+                                ${isTerminalState || !hasStatusChanged 
+                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                                    : 'bg-blue-600 hover:bg-blue-700 text-white'}
+                            `}
                         >
-                            CẬP NHẬT NGAY
+                            {isTerminalState ? 'ĐƠN ĐÃ CHỐT SỔ' : 'CẬP NHẬT NGAY'}
                         </button>
                     </div>
                 </div>
             </div>
 
             <h3 className="text-xl font-bold mb-4 text-gray-700">Sản phẩm trong đơn</h3>
-            <div className="overflow-hidden rounded-lg border border-gray-200">
+            <div className="overflow-x-auto rounded-lg border border-gray-200">
                 <table className="min-w-full bg-white">
-                    <thead className="bg-gray-800 text-white text-xs uppercase">
+                    <thead className="bg-gray-800 text-white text-xs uppercase whitespace-nowrap">
                         <tr>
                             <th className="py-3 px-4 text-left">Tên Sản Phẩm</th>
                             <th className="py-3 px-4 text-center">Số lượng</th>
@@ -120,7 +141,7 @@ const OrderDetail = () => {
                                 <td className="py-3 px-4 text-center font-bold text-blue-600">{item.quantity}</td>
                                 <td className="py-3 px-4 text-right">{Number(item.price).toLocaleString('vi-VN')} đ</td>
                                 <td className="py-3 px-4 text-right font-bold text-red-500">
-                                    {Number(item.subtotal).toLocaleString('vi-VN')} đ
+                                    {Number(item.quantity * item.price).toLocaleString('vi-VN')} đ
                                 </td>
                             </tr>
                         ))}
