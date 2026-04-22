@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -12,7 +16,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
@@ -22,7 +26,7 @@ body {
   min-height: 100vh;
 }
 
-#root{
+#root {
   width: 100%;
   min-height: 100vh;
 }
@@ -46,13 +50,41 @@ button {
   cursor: pointer;
 }
 
-h1{
+h1 {
   font-size: 28px;
-  margin:0;
+  margin: 0;
 }
 
-.main-content{
+.main-content {
   width: 100%;
   padding: 14px 14px;
   min-height: 100vh;
+}
+
+@theme {
+  /* Khai báo Font chữ từ file mẫu */
+  --font-headline: "Lexend", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Định nghĩa bảng màu Elite Analytics */
+  --color-primary: #005c55;
+  --color-primary-container: #0f766e;
+  --color-secondary: #006b5f;
+  --color-tertiary-fixed-dim: #ffb95f;
+  --color-on-tertiary-fixed: #2a1700;
+  --color-surface: #effcf9;
+  --color-surface-container-low: #e9f6f3;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-surface-variant: #3e4947;
+  --color-error: #ba1a1a;
+}
+
+/* Các Class bổ trợ từ file mẫu */
+@utility tactical-gradient {
+  background: linear-gradient(135deg, #005c55 0%, #0f766e 100%);
+}
+
+@utility glass-panel {
+  background: rgba(239, 252, 249, 0.8);
+  backdrop-filter: blur(12px);
 }

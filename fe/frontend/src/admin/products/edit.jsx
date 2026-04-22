@@ -1,241 +1,329 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./products.css";
 
 function EditProduct() {
 
-  const { id } = useParams();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [form, setForm] = useState({
+    category_id: "",
     name: "",
     price: "",
     sale_price: "",
     quantity: "",
     description: "",
-    image: null,
+    image: "",
     status: 1
   });
+
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [currentImage, setCurrentImage] = useState("");
-
   useEffect(() => {
+    fetchProduct();
+    fetchCategories();
+  }, []);
 
-    axios.get(`https://xaydungphanmemweb-umwx.onrender.com/admin/products/${id}`)
-      .then(res => {
+  const fetchCategories = async () => {
+    try {
 
-        const p = res.data;
+      const res = await axios.get(
+        "https://xaydungphanmemweb-umwx.onrender.com/admin/categories"
+      );
 
-        setForm({
-          name: p.name || "",
-          price: p.price || "",
-          sale_price: p.sale_price || "",
-          quantity: p.quantity || "",
-          description: p.description || "",
-          image: null,
-          status: p.status ?? 1
-        });
+      setCategories(res.data.data || res.data);
 
-        if (p.image) {
-          setCurrentImage(`https://xaydungphanmemweb-umwx.onrender.com/storage/${p.image}`);
-        }
+    } catch (error) {
 
-      })
-      .catch(err => console.log(err));
+      console.error("Lỗi load categories", error);
 
-  }, [id]);
+    }
+  };
+
+  const fetchProduct = async () => {
+    try {
+
+      setLoading(true);
+
+      const res = await axios.get(
+        `https://xaydungphanmemweb-umwx.onrender.com/admin/products/${id}`
+      );
+
+      const data = res.data;
+
+      setForm({
+        category_id: data.category_id || "",
+        name: data.name || "",
+        price: data.price || "",
+        sale_price: data.sale_price || "",
+        quantity: data.quantity || "",
+        description: data.description || "",
+        image: data.image || "",
+        status: data.status ?? 1
+      });
+
+    } catch (error) {
+
+      console.error(error);
+      alert("Không thể tải sản phẩm");
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
 
   const handleChange = (e) => {
-    setLoading(true);
-    const { name, value, files } = e.target;
 
-    if (name === "image") {
-      setForm({ ...form, image: files[0] });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    const { name, value } = e.target;
+
+    setForm({
+      ...form,
+      [name]: name === "status" ? Number(value) : value
+    });
 
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
 
     e.preventDefault();
 
-    const data = new FormData();
+    try {
 
-    data.append("_method", "PUT");
-    data.append("name", form.name);
-    data.append("price", form.price);
-    data.append("sale_price", form.sale_price);
-    data.append("quantity", form.quantity);
-    data.append("description", form.description);
-    data.append("status", form.status);
+      setLoading(true);
 
-    if (form.image) {
-      data.append("image", form.image);
-    }
-
-    axios.post(
-      `https://xaydungphanmemweb-umwx.onrender.com/admin/products/${id}`,
-      data,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data"
+      await axios.put(
+        `https://xaydungphanmemweb-umwx.onrender.com/admin/products/${id}`,
+        form,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
-      }
-    )
-      .then(() => {
+      );
 
-        alert("Cập nhật thành công");
-        navigate("/products");
+      alert("Cập nhật sản phẩm thành công");
 
-      })
-      .catch(err => {
-        console.log(err.response)
-          .finally(() => setLoading(false));;
-      });
+      navigate("/products");
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Lỗi khi cập nhật sản phẩm: " +
+        (error.response?.data?.message || "Không xác định")
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
 
   };
 
   return (
+    <div className="product-page">
 
-    <div className="product-form-container">
+      <h1 className="tieudetaosanpham">
+        Chỉnh sửa sản phẩm
+      </h1>
 
-      <h1 className="form-title">Cập nhật sản phẩm</h1>
+      <div className="product-card">
 
-      <form className="product-form" onSubmit={handleSubmit}>
+        <form
+          className="product-form"
+          onSubmit={handleSubmit}
+        >
 
-        <div>
-          <label>Tên sản phẩm</label>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* Category + Name */}
+          <div className="grid-2">
 
-        <div className="grid-2">
+            <div className="form-group">
+              <label>Danh mục</label>
+              <select
+                name="category_id"
+                value={form.category_id}
+                onChange={handleChange}
+                required
+              >
+                <option value="">
+                  -- Chọn danh mục --
+                </option>
 
-          <div>
-            <label>Giá</label>
-            <input
-              type="number"
-              name="price"
-              value={form.price}
-              onChange={handleChange}
-              required
-            />
-          </div>
+                {categories.map((item) => (
+                  <option
+                    key={item.id}
+                    value={item.id}
+                  >
+                    {item.name}
+                  </option>
+                ))}
 
-          <div>
-            <label>Giá khuyến mãi</label>
-            <input
-              type="number"
-              name="sale_price"
-              value={form.sale_price}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-        </div>
-
-        <div className="grid-2">
-
-          <div>
-            <label>Số lượng</label>
-            <input
-              type="number"
-              name="quantity"
-              value={form.quantity}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div>
-            <label>Trạng thái</label>
-            <select
-              name="status"
-              value={form.status}
-              onChange={handleChange}
-            >
-              <option value="1">Hoạt động</option>
-              <option value="0">Ẩn</option>
-            </select>
-          </div>
-
-        </div>
-
-        <div>
-          <label>Mô tả</label>
-          <textarea
-            rows="4"
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="image-box">
-
-          <label>Hình ảnh</label>
-
-          <input
-            type="file"
-            name="image"
-            onChange={handleChange}
-          />
-
-          {currentImage && (
-
-            <div className="current-img">
-
-              <p>Ảnh hiện tại:</p>
-
-              <img
-                src={currentImage}
-                alt="product"
-                width="120"
-              />
-
+              </select>
             </div>
 
+            <div className="form-group">
+              <label>Tên sản phẩm</label>
+              <input
+                name="name"
+                type="text"
+                required
+                minLength="3"
+                value={form.name}
+                onChange={handleChange}
+              />
+            </div>
+
+          </div>
+
+          <div className="grid-2">
+            <div className="form-group">
+              <label>Số lượng</label>
+              <input
+                name="quantity"
+                type="number"
+                min="0"
+                required
+                value={form.quantity}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Giá (VNĐ)</label>
+              <input
+                name="price"
+                type="number"
+                min="0"
+                required
+                value={form.price}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Giá khuyến mãi</label>
+            <input
+              name="sale_price"
+              type="number"
+              min="0"
+              value={form.sale_price}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Mô tả</label>
+            <textarea
+              name="description"
+              rows="4"
+              value={form.description}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="grid-2">
+
+            <div className="form-group">
+              <label>Trạng thái</label>
+              <select
+                name="status"
+                value={form.status}
+                onChange={handleChange}
+              >
+                <option value="1">
+                  Hoạt động
+                </option>
+                <option value="0">
+                  Ẩn
+                </option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>URL Hình ảnh</label>
+              <input
+                type="text"
+                name="image"
+                placeholder="https://..."
+                value={form.image}
+                onChange={handleChange}
+              />
+            </div>
+
+          </div>
+
+          {/* Preview image */}
+          {form.image && (
+            <div
+              className="image-preview"
+              style={{
+                marginTop: "15px",
+                textAlign: "center"
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#666"
+                }}
+              >
+                Xem trước ảnh:
+              </p>
+
+              <img
+                src={form.image}
+                alt="preview"
+                style={{
+                  maxWidth: "200px",
+                  maxHeight: "200px",
+                  borderRadius: "10px",
+                  border: "2px dashed #ccc",
+                  padding: "5px"
+                }}
+                onError={(e) => {
+                  e.target.src =
+                    "https://placehold.co/200?text=Link+ảnh+lỗi";
+                }}
+              />
+            </div>
           )}
 
-        </div>
+          <div className="form-actions">
 
-        <div className="form-actions">
+            <button
+              type="button"
+              className="btn-cancel"
+              onClick={() => navigate("/products")}
+            >
+              Hủy
+            </button>
 
-          <button
-            type="button"
-            className="btn-cancel"
-            onClick={() => navigate("/products")}
-          >
-            Hủy
+            <button
+              type="submit"
+              className="btn-submit"
+              disabled={loading}
+            >
+              {loading
+                ? "Đang cập nhật..."
+                : "Cập nhật sản phẩm"}
+            </button>
 
-          </button>
+          </div>
 
-          <button
-            type="submit"
-            className="btn-save"
-            disabled={loading}
-          >
-            {loading ? "Đang cập nhật..." : "Cập nhật"}
-          </button>
+        </form>
 
-        </div>
-
-      </form>
+      </div>
 
     </div>
-
   );
-
 }
 
 export default EditProduct;

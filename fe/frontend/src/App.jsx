@@ -17,17 +17,29 @@ function App() {
       <Routes>
 
         <Route path="/" element={<AdminLayout />}>
-         <Route index element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/products" element={<ProductIndex />} />
-          <Route path="/categories" element={<CategoriesIndex />} />
+
+          <Route index element={<ProductIndex />} />
+          <Route path="dashboard" element={<Dashboard />} />
+
+          {/* Products group */}
+          <Route path="products">
+            <Route index element={<ProductIndex />} />
+            <Route path="create" element={<CreateProduct />} />
+            <Route path="edit/:id" element={<EditProduct />} />
+          </Route>
+
+          {/* Categories group */}
+          <Route path="categories">
+            <Route index element={<CategoriesIndex />} />
+            <Route path="create" element={<CategoryCreate />} />
+            <Route path="edit/:id" element={<EditCategory />} />
+          </Route>
+
+          {/* Users */}
           <Route path="BASE_FE/users" element={<UsersIndex />} />
-          <Route path="/users/create" element={<UserCreate />} />
-          <Route path="/users/edit/:id" element={<UserEdit />} />
-          <Route path="/products/create" element={<CreateProduct />} />
-          <Route path="/products/edit/:id" element={<EditProduct />} />
-          <Route path="/categories/create" element={<CategoryCreate />} />
-          <Route path="/categories/edit/:id" element={<EditCategory />} />
+          <Route path="users/create" element={<UserCreate />} />
+          <Route path="users/edit/:id" element={<UserEdit />} />
+
         </Route>
 
       </Routes>

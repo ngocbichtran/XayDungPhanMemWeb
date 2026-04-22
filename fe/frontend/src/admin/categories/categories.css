@@ -1,128 +1,156 @@
-.top-bar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@reference "../../index.css";
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.top-bar h1{
-    font-size:22px;
-    font-weight:bold;
+.top-bar h1 {
+    font-size: 22px;
+    font-weight: bold;
 }
 
-.btn-add{
-    background:#2563eb;
-    color:white;
-    padding:10px 16px;
-    border-radius:6px;
-    border:none;
-    cursor:pointer;
+.btn-add {
+    background: #2563eb;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
 }
 
-.btn-add:hover{
-    background:#1d4ed8;
+.btn-add:hover {
+    background: #1d4ed8;
 }
 
-.table-box{
-    background:white;
-    padding:20px;
-    border-radius:8px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+.table-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.product-table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:14px;
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
 }
 
 .product-table th,
-.product-table td{
-    border-bottom:1px solid #e5e7eb;
-    padding:10px;
-    text-align:center;
+.product-table td {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 10px;
+    text-align: center;
 }
 
-.product-table thead{
-    background:#f9fafb;
+.product-table thead {
+    background: #f9fafb;
 }
 
-.product-img{
-    width:60px;
-    height:60px;
-    object-fit:cover;
-    border-radius:6px;
+.product-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
 }
 
-.no-img{
-    color:#9ca3af;
-    font-style:italic;
+.no-img {
+    color: #9ca3af;
+    font-style: italic;
 }
 
-.status-active{
-    color:#16a34a;
-    font-weight:600;
+.status-active {
+    color: #16a34a;
+    font-weight: 600;
 }
 
-.status-hide{
-    color:#dc2626;
-    font-weight:600;
+.status-hide {
+    color: #dc2626;
+    font-weight: 600;
 }
 
-.actions button{
-    margin:0 5px;
-    border:none;
-    background:none;
-    cursor:pointer;
+.actions button {
+    margin: 0 5px;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 
-.actions .edit{
-    color:#2563eb;
+.actions .edit {
+    color: #2563eb;
 }
 
-.actions .delete{
-    color:#dc2626;
+.actions .delete {
+    color: #dc2626;
 }
 
 /* cate-create */
-.category-container{
-    max-width:600px;
-    margin:auto;
-    background:#fff;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+.category-container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.category-form{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.category-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.category-form label{
-    font-weight:bold;
-    margin-bottom:5px;
+.category-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .category-form input,
 .category-form textarea,
-.category-form select{
-    width:100%;
-    padding:8px;
-    border:1px solid #ccc;
-    border-radius:6px;
+.category-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }
 
-.btn-save{
-    background:#2563eb;
-    color:white;
-    padding:10px;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
+.btn-save {
+    background: #2563eb;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-.btn-save:hover{
-    background:#1e4ed8;
+.btn-save:hover {
+    background: #1e4ed8;
+}
+
+/* Import Google Fonts */
+
+.font-headline {
+    font-family: 'Lexend', sans-serif;
+}
+
+.font-body {
+    font-family: 'Inter', sans-serif;
+}
+
+.tactical-gradient {
+    background: linear-gradient(135deg, #005c55 0%, #0f766e 100%);
+}
+
+.glass-panel {
+    background: rgba(239, 252, 249, 0.8);
+    backdrop-filter: blur(12px);
+}
+
+/* Hiệu ứng cho card */
+.category-card {
+    @apply bg-white rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative border-b-4 border-primary p-6;
 }
