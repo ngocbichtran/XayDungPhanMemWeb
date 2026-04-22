@@ -42,7 +42,7 @@ export default function Dashboard() {
         setLoading(true);
         
         // 2. Gọi API. Lưu ý: statClient trong apiFactory của bạn đã trả về response.data rồi
-        const result = await statClient.get('/dashboard-stats.php');
+        const result = await statClient.get('/admin/api/dashboard-stats.php');
         
         if (result && result.success) {
           setData(result.data);
