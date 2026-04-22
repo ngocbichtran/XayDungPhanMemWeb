@@ -1,0 +1,126 @@
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.top-bar h1{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.btn-add{
+    background:#2563eb;
+    color:white;
+    padding:10px 16px;
+    border-radius:6px;
+    border:none;
+    cursor:pointer;
+}
+
+.btn-add:hover{
+    background:#1d4ed8;
+}
+
+.table-box{
+    background:white;
+    padding:20px;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.product-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+.product-table th,
+.product-table td{
+    border-bottom:1px solid #e5e7eb;
+    padding:10px;
+    text-align:center;
+}
+
+.product-table thead{
+    background:#f9fafb;
+}
+
+.product-img{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.no-img{
+    color:#9ca3af;
+    font-style:italic;
+}
+
+.status-active{
+    color:#16a34a;
+    font-weight:600;
+}
+
+.status-hide{
+    color:#dc2626;
+    font-weight:600;
+}
+
+.actions button{
+    margin:0 5px;
+    border:none;
+    background:none;
+    cursor:pointer;
+}
+
+.actions .edit{
+    color:#2563eb;
+}
+
+.actions .delete{
+    color:#dc2626;
+}
+.form-box{
+  max-width:400px;
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  margin-bottom:15px;
+}
+
+.form-group input{
+  padding:8px;
+  border:1px solid #ccc;
+  border-radius:5px;
+}
+
+.form-actions{
+  display:flex;
+  gap:10px;
+}
+
+.btn-save{
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:8px 15px;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.btn-cancel{
+  background:#ccc;
+  border:none;
+  padding:8px 15px;
+  border-radius:5px;
+}

@@ -1,0 +1,4 @@
+/api-shop/* https://xaydungphanmemweb-umwx.onrender.com/:splat  200
+/api-stat/* https://doanweb-mtiu.onrender.com/:splat  200
+/api-order/* https://xaydungphanmemweb-9f0g.onrender.com/:splat  200
+/* /index.html 200
