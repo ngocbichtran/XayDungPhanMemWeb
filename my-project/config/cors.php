@@ -8,7 +8,8 @@ return [
 
     'allowed_origins' => [
         'http://localhost:5173',
-        'https://thu2chieunhom3xdpmw.netlify.app'
+        'https://thu2chieunhom3xdpmw.netlify.app',
+        'https://cozy-biscotti-2fed1f.netlify.app/'
     ],
 
     'allowed_headers' => ['*'],
