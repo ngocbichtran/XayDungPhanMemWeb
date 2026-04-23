@@ -17,7 +17,7 @@ function App() {
 
         {/* Mọi đường link bắt đầu bằng /admin sẽ được giao cho AdminRoutes quản lý */}
         <Route path="/admin/*" element={<AdminRoutes />} />
-        
+
         {/* Sau này có ClientRoutes của Hào thì thêm ở đây */}
       </Routes>
     </BrowserRouter>

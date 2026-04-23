@@ -12,7 +12,7 @@ const AdminLayout = () => {
 
   return (
     <div className="flex h-screen bg-gray-100 font-sans">
-      
+
       {/* ========================================== */}
       {/* CỘT BÊN TRÁI: SIDEBAR (Menu điều hướng) */}
       {/* ========================================== */}
@@ -30,10 +30,9 @@ const AdminLayout = () => {
               to={item.path}
               end={item.exact} // Dùng end để nó hiểu link gốc /admin không bị sáng đè lên link khác
               className={({ isActive }) =>
-                `block px-4 py-3 rounded-lg transition-all duration-200 font-medium ${
-                  isActive 
-                    ? 'bg-blue-600 text-white shadow-md' // Màu khi đang bấm vào trang đó
-                    : 'text-gray-400 hover:bg-gray-800 hover:text-white' // Màu khi chuột lướt qua
+                `block px-4 py-3 rounded-lg transition-all duration-200 font-medium ${isActive
+                  ? 'bg-blue-600 text-white shadow-md' // Màu khi đang bấm vào trang đó
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-white' // Màu khi chuột lướt qua
                 }`
               }
             >
@@ -54,7 +53,7 @@ const AdminLayout = () => {
       {/* KHU VỰC BÊN PHẢI: HEADER & NỘI DUNG CHÍNH */}
       {/* ========================================== */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        
+
         {/* Header (Thanh ngang trên cùng) */}
         <header className="bg-white shadow-sm border-b border-gray-200 p-4 flex justify-between items-center z-10">
           <h1 className="text-xl font-bold text-gray-800">Hệ thống Quản trị E-Commerce</h1>
@@ -70,8 +69,8 @@ const AdminLayout = () => {
         </header>
 
         {/* NỘI DUNG RUỘT (Outlet chính là cái lỗ thần kỳ) */}
-        <main className="flex-1 overflow-auto p-6 bg-gray-50">
-          <div className="mx-auto max-w-7xl">
+        <main className="flex-1 p-6 bg-gray-50">
+          <div className="mx-auto">
             {/* TẤT CẢ CODE CỦA DŨNG, TÂN VÀ BÍCH SẼ ĐƯỢC BƠM VÀO ĐÂY!
               Khi bấm menu bên trái, phần Header và Sidebar đứng yên, 
               chỉ có khu vực Outlet này bị thay đổi nội dung.

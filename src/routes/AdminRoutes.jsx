@@ -12,14 +12,20 @@ import OrderCreate from '../pages/Admin/OrderManage/OrderCreate';
 import OrderDetail from '../pages/Admin/OrderManage/OrderDetail';
 
 // 4. IMPORT CODE CỦA BÍCH (Quản lý Sản phẩm)
-import ProductIndex from '../pages/Admin/ProductManage/index';
-import CreateProduct from '../pages/Admin/ProductManage/create';
-import EditProduct from '../pages/Admin/ProductManage/edit';
 
-// 5. IMPORT CODE DANH MỤC
-import CategoriesIndex from '../pages/Admin/CategoryManage/index';
-import CategoryCreate from '../pages/Admin/CategoryManage/create';
-import EditCategory from '../pages/Admin/CategoryManage/edit';
+
+
+// Products
+import ProductIndex from '../pages/Admin/products/index';
+import CreateProduct from '../pages/Admin/products/create';
+import EditProduct from '../pages/Admin/products/edit';
+
+// Categories
+import CategoriesIndex from '../pages/Admin/categories/index';
+import CategoryCreate from '../pages/Admin/categories/create';
+import EditCategory from '../pages/Admin/categories/edit';
+
+
 
 // 6. IMPORT CODE USER (Quản lý Người dùng)
 import UsersIndex from '../pages/Admin/UserManage/index';
@@ -31,9 +37,9 @@ const AdminRoutes = () => {
     <Routes>
       {/* Bao bọc tất cả bằng Khung chung AdminLayout */}
       <Route path="/" element={<AdminLayout />}>
-        
+
         {/* ----- CỦA DŨNG ----- */}
-        <Route index element={<Dashboard />} /> 
+        <Route index element={<Dashboard />} />
 
         {/* ----- CỦA TÂN ----- */}
         <Route path="orders" element={<OrderList />} />
@@ -42,11 +48,9 @@ const AdminRoutes = () => {
 
         {/* ----- CỦA BÍCH (Sản phẩm) ----- */}
         <Route path="products" element={<ProductIndex />} />
+        <Route path="categories" element={<CategoriesIndex />} />
         <Route path="products/create" element={<CreateProduct />} />
         <Route path="products/edit/:id" element={<EditProduct />} />
-
-        {/* ----- DANH MỤC ----- */}
-        <Route path="categories" element={<CategoriesIndex />} />
         <Route path="categories/create" element={<CategoryCreate />} />
         <Route path="categories/edit/:id" element={<EditCategory />} />
 
