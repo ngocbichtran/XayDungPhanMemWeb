@@ -11,9 +11,7 @@ import OrderList from '../pages/Admin/OrderManage/OrderList';
 import OrderCreate from '../pages/Admin/OrderManage/OrderCreate';
 import OrderDetail from '../pages/Admin/OrderManage/OrderDetail';
 
-// 4. IMPORT CODE CỦA BÍCH (Quản lý Sản phẩm)
-
-
+// 4. IMPORT CODE CỦA HÀO (Quản lý Sản phẩm)
 
 // Products
 import ProductIndex from '../pages/Admin/products/index';

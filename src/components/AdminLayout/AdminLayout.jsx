@@ -5,8 +5,8 @@ const AdminLayout = () => {
   const menuItems = [
     { path: '/admin', label: '📊 Dashboard (Dũng)', exact: true },
     { path: '/admin/orders', label: '📦 Đơn hàng (Tân)' },
-    { path: '/admin/products', label: '🛍️ Sản phẩm (Bích)' },
-    { path: '/admin/categories', label: '📂 Danh mục (Bích)' },
+    { path: '/admin/products', label: '🛍️ Sản phẩm (Hào)' },
+    { path: '/admin/categories', label: '📂 Danh mục (Hào)' },
     { path: '/admin/users', label: '👥 Người dùng (Users)' },
   ];
 
