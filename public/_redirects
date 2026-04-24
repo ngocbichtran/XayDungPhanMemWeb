@@ -1,0 +1,5 @@
+/api-shop/* https://xaydungphanmemweb-umwx.onrender.com/:splat  200
+/api-stat/* https://doanweb-mtiu.onrender.com/:splat  200
+/api-order/* https://xaydungphanmemweb-9f0g.onrender.com/:splat  200
+/api-ha-store/* https://effulgent-biscochitos-797078.netlify.app/api/:splat  200
+/* /index.html 200
