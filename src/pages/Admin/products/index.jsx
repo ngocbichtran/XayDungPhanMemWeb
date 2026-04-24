@@ -75,15 +75,12 @@ function ProductIndex() {
   );
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className=" bg-gray-50 min-h-screen">
 
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Quản lý sản phẩm</h1>
-          <p className="text-gray-500 text-sm">
-            Danh sách sản phẩm trong hệ thống
-          </p>
         </div>
 
         <button
@@ -95,7 +92,12 @@ function ProductIndex() {
       </div>
 
       {/* CARD */}
-      <div className="bg-white rounded-2xl shadow overflow-hidden">
+      <div className="bg-white rounded-2xl shadow overflow-hidden"
+        style={{
+          transform: "scale(0.75)",
+          transformOrigin: "top left",
+          width: "133.33%",
+        }}>
 
         {/* SEARCH */}
         <div className="p-5 flex justify-between items-center border-b">
@@ -116,7 +118,7 @@ function ProductIndex() {
         </div>
 
         {/* TABLE */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto h-[500px]">
           <table className="w-full text-sm">
 
             <thead className="bg-gray-100 text-gray-600">
@@ -227,7 +229,7 @@ function ProductIndex() {
         </div>
 
         {/* PAGINATION */}
-        <div className="p-5 flex justify-center gap-2">
+        <div className="p-4 bg-white sticky bottom-0 flex justify-center gap-2">
           {[...Array(totalPages)].map((_, i) => (
             <button
               key={i}
@@ -245,31 +247,35 @@ function ProductIndex() {
       </div>
 
       {/* ===== POPUP CREATE ===== */}
-      {openCreate && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <CreateProduct
-              onClose={() => setOpenCreate(false)}
-              onSuccess={fetchProducts}
-            />
+      {
+        openCreate && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <CreateProduct
+                onClose={() => setOpenCreate(false)}
+                onSuccess={fetchProducts}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* ===== POPUP EDIT ===== */}
-      {openEdit && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <ProductEdit
-              id={editId}
-              onClose={() => setOpenEdit(false)}
-              onSuccess={fetchProducts}
-            />
+      {
+        openEdit && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <ProductEdit
+                id={editId}
+                onClose={() => setOpenEdit(false)}
+                onSuccess={fetchProducts}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
-    </div>
+    </div >
   );
 }
 

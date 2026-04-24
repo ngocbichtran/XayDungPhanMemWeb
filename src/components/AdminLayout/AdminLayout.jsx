@@ -70,7 +70,7 @@ const AdminLayout = () => {
 
         {/* NỘI DUNG RUỘT (Outlet chính là cái lỗ thần kỳ) */}
         <main className="flex-1 p-6 bg-gray-50">
-          <div className="mx-auto">
+          <div className="mx-auto overflow-auto">
             {/* TẤT CẢ CODE CỦA DŨNG, TÂN VÀ BÍCH SẼ ĐƯỢC BƠM VÀO ĐÂY!
               Khi bấm menu bên trái, phần Header và Sidebar đứng yên, 
               chỉ có khu vực Outlet này bị thay đổi nội dung.

@@ -6,22 +6,47 @@ import AdminRoutes from './routes/AdminRoutes';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, Filler } from 'chart.js';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, Filler);
 
+
+
+
+//Lấy từ Minh Anh
+import UserLayout from './pages/Shop/layouts/UserLayout';
+import PublicLayout from './pages/Shop/layouts/PublicLayout';
+
+import Home from './pages/Shop/pages/Home';
+import Login from './pages/Shop/pages/Login';
+import Register from './pages/Shop/pages/Register';
+import Orders from './pages/Shop/pages/Orders';
+import Profile from './pages/Shop/pages/Profile';
+import { AuthProvider } from './pages/Shop/context/AuthContext';
+
 function App() {
   // Tạm thời bỏ qua phần checkAuth của Dũng vì mình đã thống nhất bỏ phần Đăng nhập của Minh Anh ra trước.
 
   return (
-    <BrowserRouter>
+
+    <BrowserRouter><AuthProvider>
       <Routes>
-        {/* Mặc định vào trang web là đẩy thẳng vào Admin Dashboard */}
-        <Route path="/" element={<Navigate to="/admin" replace />} />
 
         {/* Mọi đường link bắt đầu bằng /admin sẽ được giao cho AdminRoutes quản lý */}
         <Route path="/admin/*" element={<AdminRoutes />} />
 
-        {/* Sau này có ClientRoutes của Hào thì thêm ở đây */}
-      </Routes>
+        {/* User */}
+        <Route element={<UserLayout />}>
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Public */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+      </Routes></AuthProvider>
     </BrowserRouter>
   );
 }
-
 export default App;

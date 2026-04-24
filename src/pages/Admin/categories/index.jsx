@@ -74,7 +74,7 @@ function CategoriesIndex() {
   return (
     <div className="flex-1 bg-surface font-body">
 
-      <section className="md:p-8 space-y-8">
+      <section className=" space-y-8">
 
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -111,7 +111,11 @@ function CategoriesIndex() {
             Đang tải...
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" style={{
+            transform: "scale(0.75)",
+            transformOrigin: "top left",
+            width: "133.33%",
+          }}>
 
             {filteredCategories.map((c) => (
               <div key={c.id} className="category-card">
@@ -179,16 +183,6 @@ function CategoriesIndex() {
       {openEdit && (
         <div className="modal-overlay" onClick={() => setOpenEdit(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-
-            <button
-              className="modal-close"
-              onClick={() => {
-                setOpenEdit(false);
-                setEditId(null);
-              }}
-            >
-              ✕
-            </button>
 
             <CategoryEdit
               id={editId}
