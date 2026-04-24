@@ -1,6 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AdminRoutes from './routes/AdminRoutes';
-
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -51,25 +50,22 @@ function App() {
           {/* ADMIN */}
           <Route path="/admin/*" element={<AdminRoutes />} />
 
-          {/* USER */}
-          <Route element={<UserLayout />}>
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/orders/:id" element={<OrderDetail />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-
-          {/* AUTH (tạm vẫn giữ để test UI nếu cần) */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-
-          {/* PUBLIC */}
+          {/* Trang chủ — ai cũng vào được, có header riêng */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
           </Route>
 
-          {/* fallback */}
-          <Route path="*" element={<h2>404 Not Found</h2>} />
+          {/* Auth — không có header */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Protected — phải đăng nhập */}
+          <Route element={<UserLayout />}>
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
 
         </Routes>
       </AuthProvider>
